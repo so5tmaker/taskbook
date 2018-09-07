@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import { Navbar, NavbarBrand } from 'reactstrap';
 
@@ -9,7 +9,7 @@ class App extends Component {
       <div className="App">
         <Navbar dark color="primary">
           <div className="container">
-            <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
+            <NavbarBrand href="/">TaskBook App</NavbarBrand>
           </div>
         </Navbar>
       </div>
