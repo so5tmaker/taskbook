@@ -1,0 +1,1 @@
+export const baseUrl = 'https://uxcandy.com/~shapoval/test-task-backend';
