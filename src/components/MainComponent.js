@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand } from 'reactstrap';
-//import { DISHES } from '../shared/dishes';
+import Task from './TaskComponent';
+import { TASKS } from '../shared/tasks';
 
 class Main extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-        //dishes: DISHES,
-        //selectedDish: null
+        tasks: TASKS,
     };
-  }
-
-  onDishSelect(dishId) {
-    //this.setState({ selectedDish: dishId});
   }
 
   render() {
@@ -24,6 +20,7 @@ class Main extends Component {
             <NavbarBrand href="/">TaskBook App</NavbarBrand>
           </div>
         </Navbar>
+        <Task tasks={this.state.tasks} />
       </div>
     );
   }
