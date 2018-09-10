@@ -14,6 +14,12 @@ const mapStateToProps = state => {
     }
 }
 
+const mapDispatchToProps = dispatch => ({
+  
+    //addTask: (dishId, rating, author, comment) => dispatch(addTask(dishId, rating, author, comment))
+  
+  });
+
 function RenderPagination({ index }) {
     console.log(`index is ${index}`);
     return (
