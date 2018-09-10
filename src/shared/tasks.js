@@ -22,5 +22,21 @@ export const TASKS = [
         text: "Hello from user 3!",
         status: 0,
         image_path: "https://uxcandy.com/~shapoval/test-task-backend/upload/user_images/5900dfd7/1508836803_4.jpg"
+    },
+    {
+        id: 5,
+        username: "Test User 4",
+        email: "test_user_3@example.com",
+        text: "Hello from user 4!",
+        status: 0,
+        image_path: "https://uxcandy.com/~shapoval/test-task-backend/upload/user_images/5900dfd7/1508836540_1.jpg"
+    },
+    {
+        id: 7,
+        username: "Test User 5",
+        email: "test_user_3@example.com",
+        text: "Hello from user 5!",
+        status: 0,
+        image_path: "https://uxcandy.com/~shapoval/test-task-backend/upload/user_images/5900dfd7/1508836803_4.jpg"
     }
 ];

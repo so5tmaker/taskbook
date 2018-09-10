@@ -8,6 +8,7 @@ function RenderTaskItem({ task }) {
             <CardBody>
                 <CardTitle>{task.username}</CardTitle>
                 <CardSubtitle>{task.email}</CardSubtitle>
+                <CardText>{task.status === 0 ? 'The Task Was Done' : 'Pending...'}</CardText>
                 <CardText>{task.text}</CardText>
             </CardBody>
         </Card >
@@ -15,13 +16,18 @@ function RenderTaskItem({ task }) {
 }
 
 const Task = (props) => {
-
     const task = props.tasks.map((task) => {
-        return (
-            <div className="col-12 col-md-5 m-1" key={task.id}>
-                <RenderTaskItem task={task} />
-            </div>
-        );
+        if (task != null) {
+            return (
+                <div className="col-12 col-md-5 m-1" key={task.id}>
+                    <RenderTaskItem task={task} />
+                </div>
+            );
+        } else {
+            return (
+                <div></div>
+            );    
+        }
     });
 
     return (
