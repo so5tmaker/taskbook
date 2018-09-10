@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Task from './TaskComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
+import Create from './CreateComponent';
 import { TASKS } from '../shared/tasks';
 import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
@@ -9,9 +10,9 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
     return {
-      tasks: state.tasks
+        tasks: state.tasks
     }
-  }
+}
 
 function RenderPagination({ index }) {
     console.log(`index is ${index}`);
@@ -54,7 +55,7 @@ class Main extends Component {
                 numbers.push(this.state.tasks[index]);
             }
             return (
-                <Task tasks={numbers}/>
+                <Task tasks={numbers} />
             )
         }
 
@@ -79,6 +80,7 @@ class Main extends Component {
             <div>
                 <Header />
                 <Switch>
+                    <Route path="/create" component={Create}  />
                     <Route path="/page/:pageId" component={TaskWithIds} />
                 </Switch>
                 <div className="container">
@@ -88,7 +90,6 @@ class Main extends Component {
                         </div>
                     </div>
                 </div>
-
                 <Footer />
             </div>
         );
