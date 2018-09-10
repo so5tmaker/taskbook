@@ -3,8 +3,15 @@ import Task from './TaskComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { TASKS } from '../shared/tasks';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+    return {
+      tasks: state.tasks
+    }
+  }
 
 function RenderPagination({ index }) {
     console.log(`index is ${index}`);
@@ -88,4 +95,4 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default withRouter(connect(mapStateToProps)(Main));
