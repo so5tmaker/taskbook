@@ -32,16 +32,12 @@ class Create extends Component {
         let reader = new FileReader();
         reader.readAsDataURL(files[0]);
         
-// https://stackoverflow.com/questions/38049966/get-image-preview-before-uploading-in-react
-// https://gist.github.com/hartzis/0b77920380736f98e4f9
         reader.onloadend = () => {
             this.setState({
                 file: files[0],
                 imagePreviewUrl: [reader.result]
             });
-            //console.log(`Successfully uploaded ${e.target.result}!`);
             let { imagePreviewUrl } = this.state;
-            console.log('imagePreviewUrl create:',  imagePreviewUrl);
             this.props.setImage(imagePreviewUrl);
         }
 
