@@ -1,105 +1,96 @@
 import React, { Component } from 'react';
-import Task from './TaskComponent';
+import Home from './HomeComponent';
+import Create from './CreateComponent';
+import RenderTask from './TasksComponent';
+import Paginate from './PaginationComponent';
+import Preview from './PreviewComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
-import Create from './CreateComponent';
-import { TASKS } from '../shared/tasks';
-import { Switch, Route, Link, withRouter } from 'react-router-dom';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { fetchTasks, postTask } from '../redux/ActionCreators';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
+const mapDispatchToProps = dispatch => ({
+    fetchTasks: () => dispatch(fetchTasks()),
+    postTask: (task) => dispatch(postTask(task))
+});
 
 const mapStateToProps = state => {
     return {
-        tasks: state.tasks
+        tasks: state.tasks,
+        image: null
     }
-}
-
-const mapDispatchToProps = dispatch => ({
-  
-    //addTask: (dishId, rating, author, comment) => dispatch(addTask(dishId, rating, author, comment))
-  
-  });
-
-function RenderPagination({ index }) {
-    console.log(`index is ${index}`);
-    return (
-        <PaginationItem key={index}>
-            <Link to={`/page/${index + 1}`}>
-                <PaginationLink>{index + 1}</PaginationLink>
-            </Link>
-        </PaginationItem>
-    );
-}
+};
 
 class Main extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            tasks: TASKS,
-            activePage: 1
-        };
-        this.itemsOnPage = 3;
+    componentDidMount() {
+        this.props.fetchTasks();
     }
-
-    handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
-        this.setState({ activePage: pageNumber });
-    }
-
+    
     render() {
+        const HomePage = () => {
+            return (
+                <Home
+                    tasks={this.props.tasks.tasks.filter(task => this.props.tasks.tasks.indexOf(task) <= 2)}
+                    tasksLoading={this.props.tasks.isLoading}
+                    taskErrMess={this.props.tasks.errMess}
+                />
+            );
+        }
 
         const TaskWithIds = ({ match }) => {
-            const tasksLength = this.state.tasks.length;
+            let itemsOnPage = 3;
+            const tasksLength = this.props.tasks.tasks.length;
             let index = match.params.pageId - 1;
-            let start = index * this.itemsOnPage;
-            let end = start + (this.itemsOnPage - 1);
+            let start = index * itemsOnPage;
+            let end = start + (itemsOnPage - 1);
             end = (end > tasksLength) ? tasksLength - 1 : end;
             let numbers = [];
             console.log('TaskWithIds', numbers);
             for (let index = start; index <= end; index++) {
-                numbers.push(this.state.tasks[index]);
+                numbers.push(this.props.tasks.tasks[index]);
             }
             return (
-                <Task tasks={numbers} />
+                <div>
+                    <div className='container'>
+                        <div className='row align-items-start'>
+                            <RenderTask tasks={numbers}
+                                isLoading={this.props.tasks.isLoading}
+                                errMess={this.props.tasks.errMess}
+                            />
+                        </div>
+                    </div>
+                    <Paginate tasks={this.props.tasks.tasks}
+                        isLoading={this.props.tasks.tasksLoading}
+                        errMess={this.props.tasks.tasksErrMess}
+                    />
+                </div>
             )
         }
-
-        const RenderPaginations = () => {
-            const tasksLength = this.state.tasks.length;
-            let numbers = [];
-            let length = Math.ceil(tasksLength / this.itemsOnPage);
-            for (let index = 0; index < length; index++) {
-                numbers[index] = index;
-            }
-            console.log('RenderPaginations', numbers);
-            return (
-                <Pagination aria-label="Page navigation example">
-                    {numbers.map(index => <RenderPagination index={index} />)}
-                </Pagination>
-            )
-        }
-
-        const paginations = RenderPaginations();
 
         return (
             <div>
                 <Header />
-                <Switch>
-                    <Route path="/create" component={Create}  />
-                    <Route path="/page/:pageId" component={TaskWithIds} />
-                </Switch>
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-auto">
-                            {paginations}
-                        </div>
-                    </div>
-                </div>
+                <TransitionGroup>
+                    <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
+                        <Switch>
+                            <Route path="/home" component={HomePage} />
+                            <Route path="/page/:pageId" component={TaskWithIds} />
+                            <Route exact path="/create"
+                                component={() => <Create postTask={this.props.postTask}
+                                />}
+                            />
+                            <Route exact path="/preview" component={() => <Preview tasks={this.props.tasks.tasks}/>} />
+                            <Redirect to="/home" />
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
                 <Footer />
             </div>
         );
     }
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

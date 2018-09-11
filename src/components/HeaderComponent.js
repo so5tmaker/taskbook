@@ -1,30 +1,28 @@
 import React, { Component } from 'react';
 import {
-    Navbar, Nav, NavbarBrand, NavItem, Jumbotron,
-    Modal, ModalHeader, ModalBody,
-    Form, FormGroup, Input, Label,
-    Button, Row, Col
+    Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
+    Button, Modal, ModalHeader, ModalBody,
+    Form, FormGroup, Input, Label
 } from 'reactstrap';
-import { Control, LocalForm, Errors } from 'react-redux-form';
-import { Link } from 'react-router-dom';
-
-const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
-const minLength = (len) => (val) => val && (val.length >= len);
-const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+import { NavLink } from 'react-router-dom';
 
 class Header extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isTaskModalOpen: false,
+            isNavOpen: false,
             isModalOpen: false
-        };
+        }
+        this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
-        this.toggleTaskModal = this.toggleTaskModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
-        this.handleTask = this.handleTask.bind(this);
+    }
+
+    toggleNav() {
+        this.setState({
+            isNavOpen: !this.state.isNavOpen
+        });
     }
 
     toggleModal() {
@@ -33,54 +31,51 @@ class Header extends Component {
         });
     }
 
-    toggleTaskModal() {
-        this.setState({
-            isTaskModalOpen: !this.state.isTaskModalOpen
-        });
-    }
-
     handleLogin(event) {
         this.toggleModal();
-        alert("Username: " + this.username.value + " Password: " + this.password.value
-            + " Remember: " + this.remember.checked);
+        alert("Username: " + this.username.value + " Password: " + this.username.value
+            + " Remember: " + this.username.checked);
         event.preventDefault();
-    }
-
-    handleTask(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
     }
 
     render() {
         return (
             <React.Fragment>
-                <Navbar dark>
+                <Navbar dark expand="md">
                     <div className="container">
-                        <NavbarBrand href="/">TaskBook App</NavbarBrand>
-                        <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <Link to={'/create'}>
-                                    <Button outline >
+                        <NavbarToggler onClick={this.toggleNav} />
+                        <NavbarBrand className="mr-auto" href="/">
+                        
+                        </NavbarBrand>
+                        <Collapse isOpen={this.state.isNavOpen} navbar>
+                            <Nav navbar>
+                                <NavItem>
+                                    <NavLink className="nav-link" to="/home" >
+                                        <span className="fa fa-home fa-lg"></span> Home
+                                    </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" to="/create" >
                                         <span className="fa fa-pencil fa-lg"></span> Create Task
+                                    </NavLink>
+                                </NavItem>
+                            </Nav>
+                            <Nav className="ml-auto" navbar>
+                                <NavItem>
+                                    <Button outline onClick={this.toggleModal}>
+                                        <span className="fa fa-sign-in fa-lg"></span> Login
                                     </Button>
-                                </Link>
-                            </NavItem>
-                        </Nav>
-                        <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <Button outline onClick={this.toggleModal}>
-                                    <span className="fa fa-sign-in fa-lg"></span> Login
-                                </Button>
-                            </NavItem>
-                        </Nav>
+                                </NavItem>
+                            </Nav>
+                        </Collapse>
                     </div>
                 </Navbar>
                 <Jumbotron>
                     <div className="container">
                         <div className="row row-header">
                             <div className="col-12 col-sm-6">
-                                <h1>Tasks for developers</h1>
-                                <p>We take inspiration from the World's best cuisines, and create a unique fusion experience. Our lipsmacking creations will tickle your culinary senses!</p>
+                                <h1>Tasks List App</h1>
+                                <p>”If you wait until the wind and the weather are just right, you will never plant anything and never harvest anything. The plans of the diligent one surely make for advantage.”</p>
                             </div>
                         </div>
                     </div>
@@ -104,87 +99,10 @@ class Header extends Component {
                                     <Input type="checkbox" name="remember"
                                         innerRef={(input) => this.remember = input} />
                                     Remember me
-                                </Label>
+                            </Label>
                             </FormGroup>
-                            <Button type="submit" value="submit" color="primary">Login</Button>
+                            <Button type="submit" value="submit" className="primary">Login</Button>
                         </Form>
-                    </ModalBody>
-                </Modal>
-                <Modal isOpen={this.state.isTaskModalOpen} toggle={this.toggleTaskModal}>
-                    <ModalHeader toggle={this.toggleTaskModal}>Create Task</ModalHeader>
-                    <ModalBody>
-                        <LocalForm onSubmit={(values) => this.handleTask(values)}>
-                            <Row className="form-group">
-                                <Label htmlFor="username" md={2}>Name</Label>
-                                <Col md={10}>
-                                    <Control.text model=".username" id="username" name="username"
-                                        placeholder="User Name"
-                                        className="form-control"
-                                        validators={{
-                                            required, minLength: minLength(3), maxLength: maxLength(15)
-                                        }}
-                                    />
-                                    <Errors
-                                        className="text-danger"
-                                        model=".username"
-                                        show="touched"
-                                        messages={{
-                                            required: 'Required',
-                                            minLength: 'Must be greater than 3 characters',
-                                            maxLength: 'Must be 15 characters or less'
-                                        }}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="email" md={2}>Email</Label>
-                                <Col md={10}>
-                                    <Control.text model=".email" id="email" name="email"
-                                        placeholder="Email"
-                                        className="form-control"
-                                        validators={{
-                                            required, validEmail
-                                        }}
-                                    />
-                                    <Errors
-                                        className="text-danger"
-                                        model=".email"
-                                        show="touched"
-                                        messages={{
-                                            required: 'Required',
-                                            validEmail: 'Invalid Email Address'
-                                        }}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Col md={{ size: 6, offset: 2 }}>
-                                    <div className="form-check">
-                                        <Label check>
-                                            <Control.checkbox model=".status" name="status"
-                                                className="form-check-input"
-                                            /> {' '}
-                                            <strong>Is The Task Done?</strong>
-                                        </Label>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="text" md={2}>Task</Label>
-                                <Col md={10}>
-                                    <Control.textarea model=".text" id="text" name="text"
-                                        rows="12"
-                                        className="form-control" />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Col md={{ size: 10, offset: 2 }}>
-                                    <Button type="submit" color="primary">
-                                        Submit Task
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </LocalForm>
                     </ModalBody>
                 </Modal>
             </React.Fragment>
