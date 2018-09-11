@@ -7,7 +7,10 @@ class Preview extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { file: '', imagePreviewUrl: '' };
+        this.state = {
+            file: '',
+            imagePreviewUrl: ''
+        };
     }
 
     // Access store by defining context types
@@ -19,12 +22,16 @@ class Preview extends Component {
         // Get the redux store from context
         const { store } = this.context;
         const state = store.getState();
-        console.log('image:', state);
-        return state.task;
+        return state;
     }
 
     render() {
-        let item = this.formValues;
+    
+
+        let item = this.formValues.task;
+        let image = this.formValues.image;
+        console.log('imagePreviewUrl:', image.image);
+    
         return (
             <div className="container">
                 <div className="row">
@@ -38,7 +45,7 @@ class Preview extends Component {
                     </div>
                     <div className='col-12 m-1'>
                         <Card>
-                            <CardImg src={item.fileUpload} alt={item.username} />
+                            <CardImg src={image.image} alt={item.username} />
                             <CardBody>
                                 <CardTitle>{item.username}</CardTitle>
                                 <CardText>{item.email}</CardText>

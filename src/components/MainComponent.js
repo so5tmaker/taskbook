@@ -8,12 +8,13 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTasks, postTask } from '../redux/ActionCreators';
+import { fetchTasks, postTask, setImage } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const mapDispatchToProps = dispatch => ({
     fetchTasks: () => dispatch(fetchTasks()),
-    postTask: (task) => dispatch(postTask(task))
+    postTask: (task) => dispatch(postTask(task)),
+    setImage: (image) => dispatch(setImage(image))
 });
 
 const mapStateToProps = state => {
@@ -28,7 +29,7 @@ class Main extends Component {
     componentDidMount() {
         this.props.fetchTasks();
     }
-    
+
     render() {
         const HomePage = () => {
             return (
@@ -79,10 +80,10 @@ class Main extends Component {
                             <Route path="/home" component={HomePage} />
                             <Route path="/page/:pageId" component={TaskWithIds} />
                             <Route exact path="/create"
-                                component={() => <Create postTask={this.props.postTask}
+                                component={() => <Create postTask={this.props.postTask} setImage={this.props.setImage}
                                 />}
                             />
-                            <Route exact path="/preview" component={() => <Preview tasks={this.props.tasks.tasks}/>} />
+                            <Route exact path="/preview" component={() => <Preview tasks={this.props.tasks.tasks} />} />
                             <Redirect to="/home" />
                         </Switch>
                     </CSSTransition>

@@ -1,6 +1,15 @@
 import * as ActionTypes from './ActionTypes';
 import { rmtUrl } from '../shared/baseUrl';
 
+export const setImage = (image) => (dispatch) => {
+    dispatch(addImage(image));
+}
+
+export const addImage = (image) => ({
+    type: ActionTypes.ADD_IMAGE,
+    payload: image
+});
+
 export const postTask = (task) => (dispatch) => {
     console.log('Post Task Submit', task);
     task = { ...task }
