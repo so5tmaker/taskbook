@@ -50,12 +50,12 @@ class Main extends Component {
 
     render() {
         const HomePage = () => {
-            console.log('HomePage', typeof this.props.tasks.tasks);
             return (
                 <Home
                     tasks={this.props.tasks.tasks.filter(task => this.props.tasks.tasks.indexOf(task) <= 2)}
                     tasksLoading={this.props.tasks.isLoading}
                     taskErrMess={this.props.tasks.errMess}
+                    admin={this.formValues.admin.admin}
                 />
             );
         }
@@ -68,7 +68,6 @@ class Main extends Component {
             let end = start + (itemsOnPage - 1);
             end = (end > tasksLength) ? tasksLength - 1 : end;
             let numbers = [];
-            console.log('TaskWithIds', numbers);
             for (let index = start; index <= end; index++) {
                 numbers.push(this.props.tasks.tasks[index]);
             }
@@ -79,6 +78,7 @@ class Main extends Component {
                             <RenderTask tasks={numbers}
                                 isLoading={this.props.tasks.isLoading}
                                 errMess={this.props.tasks.errMess}
+                                admin={this.formValues.admin.admin}
                             />
                         </div>
                     </div>
@@ -91,7 +91,6 @@ class Main extends Component {
         }
 
         const TaskWithId = ({ match }) => {
-            console.log('match.params.taskId TaskWithId', match.params.taskId);
             this.props.fetchTaskById(match.params.taskId);
             return (
                 <div>

@@ -19,9 +19,7 @@ class Edit extends Component {
     }
 
     render() {
-        console.log('tasks edit', this.props.task);
         let task = this.props.task.filter(task => task.id === parseInt(this.props.taskId, 10))[0];
-        console.log('one task edit', task);
         if (!task) {
             task = {
                 username: '',

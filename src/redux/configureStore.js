@@ -16,7 +16,7 @@ export const ConfigureStore = () => {
             tasks: Tasks,
             task: Task,
             image: Image,
-            amin: Admin,
+            admin: Admin,
 
             ...createForms({
                 task: initialTask

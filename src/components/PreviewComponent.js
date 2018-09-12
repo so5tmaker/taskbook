@@ -29,7 +29,6 @@ class Preview extends Component {
 
         let item = this.formValues.task;
         let image = this.formValues.image;
-        console.log('imagePreviewUrl:', image.image);
     
         return (
             <div className="container">

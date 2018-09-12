@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, Button } from 'reactstrap';
 
 function RenderPagination({ index }) {
-    console.log(`index is ${index}`);
     return (
         <PaginationItem key={index.toString()}>
             <Link to={`/page/${index + 1}`}>
@@ -19,7 +18,6 @@ function RenderPagination({ index }) {
 export class Paginate extends Component {
 
     handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
         this.setState({ activePage: pageNumber });
     }
 
@@ -27,10 +25,8 @@ export class Paginate extends Component {
 
         const RenderPaginations = (tasks, isLoading) => {
             const tasksLength = tasks.tasks.length;
-            console.log('RenderPaginations tasksLength', tasksLength);
             let numbers = [];
             let length = Math.ceil(tasksLength / 3);
-            console.log('RenderPaginations isLoading', isLoading);
             for (let index = 0; index < length; index++) {
                 numbers[index] = index;
             }
@@ -51,7 +47,6 @@ export class Paginate extends Component {
                 <h4>{this.props.errMess}</h4>
             );
         } else {
-            console.log('Paginate', this.props.tasks);
             return (
                 <div>
                     <div className="container">

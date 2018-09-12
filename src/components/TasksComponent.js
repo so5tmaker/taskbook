@@ -2,16 +2,24 @@ import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Loading } from './LoadingComponent';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
-function formValues() {
-    // Get the redux store from context
-    const { store } = this.context;
-    const state = store.getState();
-    return state;
+function LocalCard({item}) {
+    return (
+        <Card>
+            <CardImg src={item.image_path} alt={item.username} />
+            <CardBody>
+                <CardTitle>{item.username}</CardTitle>
+                <CardText>{item.email}</CardText>
+                <CardText>{item.status === 0 ? 'The Task Was Done' : 'Pending...'}</CardText>
+                <CardText>{item.text}</CardText>
+            </CardBody>
+        </Card>
+    )
 }
 
-export function RenderTask({ tasks, isLoading, errMess }) {
+
+export function RenderTask({ tasks, isLoading, errMess, admin }) {
+    console.log('RenderTask', admin);
     if (isLoading) {
         return (
             <Loading />
@@ -25,17 +33,7 @@ export function RenderTask({ tasks, isLoading, errMess }) {
         return (tasks.map((item) => {
             return (
                 <div className='col-12 col-md m-1'>
-                    <Link to={`/edit/${item.id}`}>
-                        <Card>
-                            <CardImg src={item.image_path} alt={item.username} />
-                            <CardBody>
-                                <CardTitle>{item.username}</CardTitle>
-                                <CardText>{item.email}</CardText>
-                                <CardText>{item.status === 0 ? 'The Task Was Done' : 'Pending...'}</CardText>
-                                <CardText>{item.text}</CardText>
-                            </CardBody>
-                        </Card>
-                    </Link>
+                    {admin ? <Link to={`/edit/${item.id}`}><LocalCard item={item} /></Link> : <LocalCard item={item} />}
                 </div>
             );
         }));

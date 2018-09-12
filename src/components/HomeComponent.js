@@ -10,6 +10,7 @@ function Home(props) {
                     <RenderTask tasks={props.tasks}
                         isLoading={props.tasksLoading}
                         errMess={props.tasksErrMess}
+                        admin={props.admin}
                     />
                 </div>
             </div>

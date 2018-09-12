@@ -51,7 +51,6 @@ export const postTask = (task) => (dispatch) => {
         dataType: "json",
     })
         .then(response => {
-            console.log('response', response);
             if (response.data.status === "ok") {
                 return response;
             } else {
