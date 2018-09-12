@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Create from './CreateComponent';
+import Edit from './EditComponent';
 import RenderTask from './TasksComponent';
 import Paginate from './PaginationComponent';
 import Preview from './PreviewComponent';
@@ -8,19 +9,24 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTasks, postTask, setImage } from '../redux/ActionCreators';
+import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import PropTypes from 'prop-types';
 
 const mapDispatchToProps = dispatch => ({
     fetchTasks: () => dispatch(fetchTasks()),
     postTask: (task) => dispatch(postTask(task)),
-    setImage: (image) => dispatch(setImage(image))
+    setImage: (image) => dispatch(setImage(image)),
+    fetchTaskById: (taskId) => dispatch(fetchTaskById(taskId)),
+    setAdmin: (admin) => dispatch(setAdmin(admin))
 });
 
 const mapStateToProps = state => {
     return {
         tasks: state.tasks,
-        image: null
+        task: state.task,
+        image: null,
+        admin: false
     }
 };
 
@@ -30,8 +36,21 @@ class Main extends Component {
         this.props.fetchTasks();
     }
 
+    // Access store by defining context types
+    static contextTypes = {
+        store: PropTypes.object
+    }
+
+    get formValues() {
+        // Get the redux store from context
+        const { store } = this.context;
+        const state = store.getState();
+        return state;
+    }
+
     render() {
         const HomePage = () => {
+            console.log('HomePage', typeof this.props.tasks.tasks);
             return (
                 <Home
                     tasks={this.props.tasks.tasks.filter(task => this.props.tasks.tasks.indexOf(task) <= 2)}
@@ -71,9 +90,24 @@ class Main extends Component {
             )
         }
 
+        const TaskWithId = ({ match }) => {
+            console.log('match.params.taskId TaskWithId', match.params.taskId);
+            this.props.fetchTaskById(match.params.taskId);
+            return (
+                <div>
+                    <div className='container'>
+                        <div className='row align-items-start'>
+                            <Edit task={this.props.tasks.tasks} taskId={match.params.taskId} />
+                        </div>
+                    </div>
+
+                </div>
+            )
+        }
+
         return (
             <div>
-                <Header />
+                <Header setAdmin={this.props.setAdmin}/>
                 <TransitionGroup>
                     <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
                         <Switch>
@@ -82,6 +116,9 @@ class Main extends Component {
                             <Route exact path="/create"
                                 component={() => <Create postTask={this.props.postTask} setImage={this.props.setImage}
                                 />}
+                            />
+                            <Route exact path="/edit/:taskId"
+                                component={TaskWithId}
                             />
                             <Route exact path="/preview" component={() => <Preview tasks={this.props.tasks.tasks} />} />
                             <Redirect to="/home" />

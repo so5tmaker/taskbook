@@ -32,8 +32,13 @@ class Header extends Component {
     }
 
     handleLogin(event) {
+        if (this.username.value === "admin" && this.password.value === "123") {
+            this.props.setAdmin(true);
+        } else {
+            this.props.setAdmin(false);
+        }
         this.toggleModal();
-        alert("Username: " + this.username.value + " Password: " + this.username.value
+        alert("Username: " + this.username.value + " Password: " + this.password.value
             + " Remember: " + this.username.checked);
         event.preventDefault();
     }
@@ -45,7 +50,7 @@ class Header extends Component {
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
                         <NavbarBrand className="mr-auto" href="/">
-                        
+
                         </NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>
                             <Nav navbar>

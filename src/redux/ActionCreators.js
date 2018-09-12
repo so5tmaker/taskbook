@@ -11,6 +11,25 @@ export const addImage = (image) => ({
     payload: image
 });
 
+export const setAdmin = (admin) => (dispatch) => {
+    dispatch(addAdmin(admin));
+}
+
+export const addAdmin = (admin) => ({
+    type: ActionTypes.ADD_ADMIN,
+    payload: admin
+});
+
+export const TaskFailed = (errMess) => ({
+    type: ActionTypes.TASK_FAILED,
+    payload: errMess
+});
+
+export const addTask = (task) => ({
+    type: ActionTypes.ADD_TASK,
+    payload: task
+});
+
 export const postTask = (task) => (dispatch) => {
 
     let formData = new FormData();
@@ -70,6 +89,27 @@ export const fetchTasks = () => (dispatch) => {
         .then(response => response.json())
         .then(tasks => dispatch(addTasks(tasks.message.tasks)))
         .catch(error => dispatch(TasksFailed(error.message)));
+}
+
+export const fetchTaskById = (taskId) => (dispatch) => {
+
+    return fetch(rmtUrl + '?developer=Example')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, // if there is response
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            }) // no response
+        .then(response => response.json())
+        .then(tasks => dispatch(addTask(tasks.message.tasks.filter(task => task.id === parseInt(taskId, 10))[0])))
+        .catch(error => dispatch(TaskFailed(error.message)));
 }
 
 export const TasksLoading = () => ({
