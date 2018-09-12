@@ -1,5 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import { rmtUrl } from '../shared/baseUrl';
+import axios from 'axios';
 
 export const setImage = (image) => (dispatch) => {
     dispatch(addImage(image));
@@ -10,49 +11,29 @@ export const addImage = (image) => ({
     payload: image
 });
 
-export const postTask = (task, image) => (dispatch) => {
-    console.log('Post Task Submit', task);
-    console.log('Post Image Submit', image);
-    //task = { ...task }
+export const postTask = (task) => (dispatch) => {
 
-    let form = new FormData();
-    form.append("username", task.username);
-    form.append("email", task.email);
-    form.append("text", task.text);
-    form.append("image", image);
+    let formData = new FormData();
+    var fileField = document.querySelector("input[type='file']");
+    formData.append("username", task.username);
+    formData.append("email", task.email);
+    formData.append("text", task.text);
+    formData.append("image", fileField.files[0]);
 
-    // axios.post({
-    //     url: rmtUrl + 'create?developer=Example',
-    //     type: 'POST',
-    //     data: form,
-    //     crossDomain: true,
-    //     processData: false,  // tell jQuery not to process the data
-    //     contentType: false,  // tell jQuery not to set contentType
-    //     mimeType: "multipart/form-data",
-    //     dataType: "json",
-    //     success: function (data) {
-    //         console.log(data);
-    //         alert(data);
-    //     }
-    // });
-
-    return fetch(rmtUrl + 'create?developer=Example', {
-        method: "POST",
-        //body: JSON.stringify(task),
-        body: form,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            "Accept": "application/json"
-        },
-        mimeType: "multipart/form-data",
-        //     // processData: false,
-        //     // dataType: "json",
-        //     // crossDomain: true,
-        //data: form,
-        credentials: "same-origin"
+    return axios({
+        url: rmtUrl + 'create?developer=Example',
+        type: 'POST',
+        data: formData,
+        crossDomain: true,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        dataType: "json",
     })
         .then(response => {
-            if (response.ok) {
+            console.log('response', response);
+            if (response.data.status === "ok") {
                 return response;
             } else {
                 var error = new Error('Error ' + response.status + ': ' + response.statusText);
@@ -63,9 +44,9 @@ export const postTask = (task, image) => (dispatch) => {
             error => {
                 throw error;
             })
-        .then(response => response.json())
-        .then(response => { dispatch(addTasks(response)); alert("Thank you for your task!\n" + JSON.stringify(response)); })
+        .then(response => { dispatch(addTasks(response)); alert("Thank you for your task!\n" + JSON.stringify(response.data)); })
         .catch(error => { console.log('post task', error.message); alert('Your task could not be posted\nError: ' + error.message); });
+
 };
 
 export const fetchTasks = () => (dispatch) => {

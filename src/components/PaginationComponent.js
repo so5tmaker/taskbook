@@ -6,7 +6,7 @@ import { Pagination, PaginationItem, Button } from 'reactstrap';
 function RenderPagination({ index }) {
     console.log(`index is ${index}`);
     return (
-        <PaginationItem key={index}>
+        <PaginationItem key={index.toString()}>
             <Link to={`/page/${index + 1}`}>
                 <Button outline color='primary'>
                     <span>{index + 1}</span>
@@ -35,7 +35,7 @@ export class Paginate extends Component {
                 numbers[index] = index;
             }
             return (
-                <Pagination aria-label="Page navigation example">
+                <Pagination key={length.toString()} aria-label="Page navigation example">
                     {numbers.map(index => <RenderPagination index={index} />)}
                 </Pagination>
             )
