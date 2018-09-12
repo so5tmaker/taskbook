@@ -23,9 +23,7 @@ class Create extends Component {
     }
 
     handleSubmit(values) {
-        // console.log("Current state is: " + JSON.stringify(values));
-        // alert("Current state is: " + JSON.stringify(values));
-        this.props.postTask(values, this.state.imagePreviewUrl);
+        this.props.postTask(values);
     }
 
     handleChange = (e) => {
@@ -102,18 +100,6 @@ class Create extends Component {
                                             validEmail: 'Invalid Email Address'
                                         }}
                                     />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Col md={{ size: 6, offset: 2 }}>
-                                    <div className="form-check">
-                                        <Label check>
-                                            <Control.checkbox model=".status" name="status"
-                                                className="form-check-input"
-                                            /> {' '}
-                                            <strong>Is The Task Done?</strong>
-                                        </Label>
-                                    </div>
                                 </Col>
                             </Row>
                             <Row className="form-group">
