@@ -13,7 +13,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const mapDispatchToProps = dispatch => ({
     fetchTasks: () => dispatch(fetchTasks()),
-    postTask: (task) => dispatch(postTask(task)),
+    postTask: (task, image) => dispatch(postTask(task, image)),
     setImage: (image) => dispatch(setImage(image))
 });
 

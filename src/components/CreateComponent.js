@@ -22,9 +22,10 @@ class Create extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(values, event) {
-        console.log("Current state is: " + JSON.stringify(values));
-        alert("Current state is: " + JSON.stringify(values));
+    handleSubmit(values) {
+        // console.log("Current state is: " + JSON.stringify(values));
+        // alert("Current state is: " + JSON.stringify(values));
+        this.props.postTask(values, this.state.imagePreviewUrl);
     }
 
     handleChange = (e) => {
@@ -40,7 +41,6 @@ class Create extends Component {
             let { imagePreviewUrl } = this.state;
             this.props.setImage(imagePreviewUrl);
         }
-
     }
 
     render() {
@@ -58,7 +58,7 @@ class Create extends Component {
                 </div>
                 <div className='row row-container'>
                     <div className='col-12 col-md-9'>
-                        {<Form id='create-task' model="task" encType="multipart/form-data" onSubmit={(values, event) => this.handleSubmit(values, event)}>
+                        {<Form id='create-task' model="task" encType="multipart/form-data" onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="username" md={2}>Your Name</Label>
                                 <Col md={10}>

@@ -10,27 +10,45 @@ export const addImage = (image) => ({
     payload: image
 });
 
-export const postTask = (task) => (dispatch) => {
+export const postTask = (task, image) => (dispatch) => {
     console.log('Post Task Submit', task);
-    task = { ...task }
+    console.log('Post Image Submit', image);
+    //task = { ...task }
 
     let form = new FormData();
     form.append("username", task.username);
     form.append("email", task.email);
     form.append("text", task.text);
+    form.append("image", image);
+
+    // axios.post({
+    //     url: rmtUrl + 'create?developer=Example',
+    //     type: 'POST',
+    //     data: form,
+    //     crossDomain: true,
+    //     processData: false,  // tell jQuery not to process the data
+    //     contentType: false,  // tell jQuery not to set contentType
+    //     mimeType: "multipart/form-data",
+    //     dataType: "json",
+    //     success: function (data) {
+    //         console.log(data);
+    //         alert(data);
+    //     }
+    // });
 
     return fetch(rmtUrl + 'create?developer=Example', {
         method: "POST",
-        body: JSON.stringify(task.fileUpload[0]),
+        //body: JSON.stringify(task),
+        body: form,
         headers: {
-            'Accept': 'multipart/form-data',
             'Content-Type': 'multipart/form-data',
-            "mimeType": "multipart/form-data",
-            "processData": false,
-            "dataType": "json",
-            "crossDomain": true,
+            "Accept": "application/json"
         },
-        data: form,
+        mimeType: "multipart/form-data",
+        //     // processData: false,
+        //     // dataType: "json",
+        //     // crossDomain: true,
+        //data: form,
         credentials: "same-origin"
     })
         .then(response => {
