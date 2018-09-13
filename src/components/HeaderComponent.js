@@ -38,8 +38,6 @@ class Header extends Component {
             this.props.setAdmin(false);
         }
         this.toggleModal();
-        alert("Username: " + this.username.value + " Password: " + this.password.value
-            + " Remember: " + this.username.checked);
         event.preventDefault();
     }
 

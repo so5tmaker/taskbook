@@ -1,6 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import { rmtUrl } from '../shared/baseUrl';
 import axios from 'axios';
+import md5 from 'md5';
 
 export const setImage = (image) => (dispatch) => {
     dispatch(addImage(image));
@@ -70,15 +71,13 @@ export const postTask = (task) => (dispatch) => {
 export const editTask = (task) => (dispatch) => {
 
     let formData = new FormData();
-    //var fileField = document.querySelector("input[type='file']");
     let token = 'beejee';
     formData.append("status", task.status ? 10 : 0);
     formData.append("text", task.text);
     formData.append("token", token);
     let status = task.status ? 10 : 0;
-    //formData.append("image", fileField.files[0]);
     let paramsString = `status=${status}&text=${task.text}&token=beejee`;
-    let paramsString = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
+    paramsString = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
     let signature = md5(paramsString);
     formData.append("signature", signature);
 

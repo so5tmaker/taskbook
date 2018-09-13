@@ -99,7 +99,7 @@ class Main extends Component {
                         <div className='row align-items-start'>
                             <Edit task={this.props.tasks.tasks}
                                 taskId={match.params.taskId}
-                                editTask={this.props.editTaskß}
+                                editTask={this.props.editTask}
                             />
                         </div>
                     </div>

@@ -46,7 +46,7 @@ class Edit extends Component {
                             <CardBody>
                                 <CardTitle className="ml-1">Your Name:  {task.username}</CardTitle>
                                 <CardText className="ml-1">Email: {task.email}</CardText>
-                                {<Form id='create-task' className='m-10' model="task" encType="multipart/form-data" onSubmit={(values) => this.handleSubmit(values)}>
+                                {<Form id='edit-task' className='m-10' model="task" encType="multipart/form-data" onSubmit={(values) => this.handleSubmit(values)}>
                                     <Row className="form-group ml-1">
                                         <strong>Done? </strong>{' '}
                                         <Col md={{ offset: 1 }}>
