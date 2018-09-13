@@ -68,27 +68,30 @@ export const postTask = (task) => (dispatch) => {
 
 };
 
-export const editTask = (task) => (dispatch) => {
+export const editTask = (task, taskId) => (dispatch) => {
 
     let formData = new FormData();
     let token = 'beejee';
-    formData.append("status", task.status ? 10 : 0);
+    let status = task.status ? 10 : 0;
+    formData.append("status", status);
+    console.log("status", taskId);
     formData.append("text", task.text);
     formData.append("token", token);
-    let status = task.status ? 10 : 0;
-    let paramsString = `status=${status}&text=${task.text}&token=beejee`;
-    paramsString = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
+    let paramsString = `status=${status}&text=${task.text}`;
+    paramsString = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A") + '&token=beejee';
+    console.log("paramsString", paramsString);
     let signature = md5(paramsString);
     formData.append("signature", signature);
-
+    let endParams = paramsString  + '&signature=' + signature;
+//?${endParams}
     return axios({
-        url: rmtUrl + '/edit/:id?developer=Example',
+        url: rmtUrl + `/edit/${taskId}`,
         type: 'POST',
-        data: formData,
+        data: endParams,
         crossDomain: true,
         processData: false,  // tell jQuery not to process the data
         contentType: false,  // tell jQuery not to set contentType
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'text/plain' },
         method: 'POST',
         dataType: "json",
     })
@@ -105,7 +108,7 @@ export const editTask = (task) => (dispatch) => {
                 throw error;
             })
         .then(response => { dispatch(addTasks(response)); alert("Thank you for your task!\n" + JSON.stringify(response.data)); })
-        .catch(error => { console.log('post task', error.message); alert('Your task could not be posted\nError: ' + error.message); });
+        .catch(error => { console.log('post task', error); /*alert('Your task could not be posted\nError: ' + error.message);*/ });
 
 };
 

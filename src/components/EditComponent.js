@@ -15,7 +15,7 @@ class Edit extends Component {
     }
 
     handleSubmit(values) {
-        this.props.editTask(values);
+        this.props.editTask(values, this.props.taskId);
     }
 
     render() {
@@ -46,19 +46,20 @@ class Edit extends Component {
                             <CardBody>
                                 <CardTitle className="ml-1">Your Name:  {task.username}</CardTitle>
                                 <CardText className="ml-1">Email: {task.email}</CardText>
-                                {<Form id='edit-task' className='m-10' model="task" encType="multipart/form-data" onSubmit={(values) => this.handleSubmit(values)}>
+                                {<Form id='edit-task' className='m-10' model="editTask" encType="multipart/form-data" onSubmit={(values) => this.handleSubmit(values)}>
                                     <Row className="form-group ml-1">
                                         <strong>Done? </strong>{' '}
                                         <Col md={{ offset: 1 }}>
                                             <Control.checkbox model=".status" name="status"
                                                 className="form-check-input"
                                             />
+                                            Old value: {task.status === 0 ? 'Pending...' : 'The Task Was Done'}
                                         </Col>
                                     </Row>
                                     <Row className="form-group ml-1">
                                         Your Task
-                                        <Col md={10}>
-                                            <Control.textarea value={task.text} model=".text" name="text"
+                                        <Col md={10}> Old value: {task.text}
+                                            <Control.textarea model=".text" name="text"
                                                 rows="12"
                                                 className="form-control" />
                                         </Col>

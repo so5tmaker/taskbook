@@ -7,7 +7,7 @@ import { Admin } from './admin';
 
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { initialTask } from './forms';
+import { initialTask, initialEditTask } from './forms';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -19,7 +19,8 @@ export const ConfigureStore = () => {
             admin: Admin,
 
             ...createForms({
-                task: initialTask
+                task: initialTask,
+                editTask: initialEditTask
             })
         }),
         applyMiddleware(thunk, logger)

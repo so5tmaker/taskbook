@@ -12,14 +12,16 @@ import { connect } from 'react-redux';
 import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
+import actions from 'react-redux-form';
 
 const mapDispatchToProps = dispatch => ({
     fetchTasks: () => dispatch(fetchTasks()),
     postTask: (task) => dispatch(postTask(task)),
-    editTask: (task) => dispatch(editTask(task)),
+    editTask: (task, taskId) => dispatch(editTask(task, taskId)),
     setImage: (image) => dispatch(setImage(image)),
     fetchTaskById: (taskId) => dispatch(fetchTaskById(taskId)),
-    setAdmin: (admin) => dispatch(setAdmin(admin))
+    setAdmin: (admin) => dispatch(setAdmin(admin)),
+    changeEditForm: (values) => actions.merge('editTask', values)
 });
 
 const mapStateToProps = state => {
@@ -100,6 +102,7 @@ class Main extends Component {
                             <Edit task={this.props.tasks.tasks}
                                 taskId={match.params.taskId}
                                 editTask={this.props.editTask}
+                                changeEditForm={this.props.changeEditForm}
                             />
                         </div>
                     </div>

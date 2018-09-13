@@ -10,7 +10,7 @@ function LocalCard({item}) {
             <CardBody>
                 <CardTitle>{item.username}</CardTitle>
                 <CardText>{item.email}</CardText>
-                <CardText>{item.status === 0 ? 'The Task Was Done' : 'Pending...'}</CardText>
+                <CardText>{item.status === 0 ? 'Pending...' : 'The Task Was Done'}</CardText>
                 <CardText>{item.text}</CardText>
             </CardBody>
         </Card>
