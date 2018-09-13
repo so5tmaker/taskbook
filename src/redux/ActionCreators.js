@@ -67,6 +67,49 @@ export const postTask = (task) => (dispatch) => {
 
 };
 
+export const editTask = (task) => (dispatch) => {
+
+    let formData = new FormData();
+    //var fileField = document.querySelector("input[type='file']");
+    let token = 'beejee';
+    formData.append("status", task.status ? 10 : 0);
+    formData.append("text", task.text);
+    formData.append("token", token);
+    let status = task.status ? 10 : 0;
+    //formData.append("image", fileField.files[0]);
+    let paramsString = `status=${status}&text=${task.text}&token=beejee`;
+    let paramsString = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
+    let signature = md5(paramsString);
+    formData.append("signature", signature);
+
+    return axios({
+        url: rmtUrl + '/edit/:id?developer=Example',
+        type: 'POST',
+        data: formData,
+        crossDomain: true,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        dataType: "json",
+    })
+        .then(response => {
+            if (response.data.status === "ok") {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => { dispatch(addTasks(response)); alert("Thank you for your task!\n" + JSON.stringify(response.data)); })
+        .catch(error => { console.log('post task', error.message); alert('Your task could not be posted\nError: ' + error.message); });
+
+};
+
 export const fetchTasks = () => (dispatch) => {
 
     dispatch(TasksLoading(true));

@@ -9,13 +9,14 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById } from '../redux/ActionCreators';
+import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 
 const mapDispatchToProps = dispatch => ({
     fetchTasks: () => dispatch(fetchTasks()),
     postTask: (task) => dispatch(postTask(task)),
+    editTask: (task) => dispatch(editTask(task)),
     setImage: (image) => dispatch(setImage(image)),
     fetchTaskById: (taskId) => dispatch(fetchTaskById(taskId)),
     setAdmin: (admin) => dispatch(setAdmin(admin))
@@ -96,7 +97,10 @@ class Main extends Component {
                 <div>
                     <div className='container'>
                         <div className='row align-items-start'>
-                            <Edit task={this.props.tasks.tasks} taskId={match.params.taskId} />
+                            <Edit task={this.props.tasks.tasks}
+                                taskId={match.params.taskId}
+                                editTask={this.props.editTaskß}
+                            />
                         </div>
                     </div>
 
@@ -106,7 +110,7 @@ class Main extends Component {
 
         return (
             <div>
-                <Header setAdmin={this.props.setAdmin}/>
+                <Header setAdmin={this.props.setAdmin} />
                 <TransitionGroup>
                     <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
                         <Switch>
