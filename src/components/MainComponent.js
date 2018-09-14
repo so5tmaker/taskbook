@@ -12,31 +12,29 @@ import { connect } from 'react-redux';
 import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import actions from 'react-redux-form';
 
 const mapDispatchToProps = dispatch => ({
-    fetchTasks: () => dispatch(fetchTasks()),
+    fetchTasks: (pageId) => dispatch(fetchTasks(pageId)),
     postTask: (task) => dispatch(postTask(task)),
-    editTask: (task, taskId) => dispatch(editTask(task, taskId)),
     setImage: (image) => dispatch(setImage(image)),
-    fetchTaskById: (taskId) => dispatch(fetchTaskById(taskId)),
     setAdmin: (admin) => dispatch(setAdmin(admin)),
-    changeEditForm: (values) => actions.merge('editTask', values)
+    editTask: (task, taskId) => dispatch(editTask(task, taskId)),
+    fetchTaskById: (taskId) => dispatch(fetchTaskById(taskId)),
 });
 
 const mapStateToProps = state => {
     return {
         tasks: state.tasks,
-        task: state.task,
         image: null,
-        admin: false
+        admin: false,
+        taskId: state.taskId
     }
 };
 
 class Main extends Component {
 
     componentDidMount() {
-        this.props.fetchTasks();
+        this.props.fetchTasks(this.props.taskId);
     }
 
     // Access store by defining context types
@@ -54,8 +52,8 @@ class Main extends Component {
     render() {
         const HomePage = () => {
             return (
-                <Home
-                    tasks={this.props.tasks.tasks.filter(task => this.props.tasks.tasks.indexOf(task) <= 2)}
+            <Home fetchTasks={this.props.fetchTasks}
+                    tasks={this.props.tasks.tasks}
                     tasksLoading={this.props.tasks.isLoading}
                     taskErrMess={this.props.tasks.errMess}
                     admin={this.formValues.admin.admin}
@@ -71,6 +69,7 @@ class Main extends Component {
             let end = start + (itemsOnPage - 1);
             end = (end > tasksLength) ? tasksLength - 1 : end;
             let numbers = [];
+            console.log('TaskWithIds', numbers);
             for (let index = start; index <= end; index++) {
                 numbers.push(this.props.tasks.tasks[index]);
             }
@@ -102,7 +101,6 @@ class Main extends Component {
                             <Edit task={this.props.tasks.tasks}
                                 taskId={match.params.taskId}
                                 editTask={this.props.editTask}
-                                changeEditForm={this.props.changeEditForm}
                             />
                         </div>
                     </div>
@@ -123,7 +121,7 @@ class Main extends Component {
                                 component={() => <Create postTask={this.props.postTask} setImage={this.props.setImage}
                                 />}
                             />
-                            <Route exact path="/edit/:taskId"
+                            <Route path="/edit/:taskId"
                                 component={TaskWithId}
                             />
                             <Route exact path="/preview" component={() => <Preview tasks={this.props.tasks.tasks} />} />

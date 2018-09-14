@@ -2,6 +2,7 @@ import * as ActionTypes from './ActionTypes';
 import { rmtUrl } from '../shared/baseUrl';
 import axios from 'axios';
 import md5 from 'md5';
+import validUrl from 'valid-url';
 
 export const setImage = (image) => (dispatch) => {
     dispatch(addImage(image));
@@ -41,7 +42,7 @@ export const postTask = (task) => (dispatch) => {
     formData.append("image", fileField.files[0]);
 
     return axios({
-        url: rmtUrl + 'create?developer=Example',
+        url: rmtUrl + 'create?developer=Viktor',
         type: 'POST',
         data: formData,
         crossDomain: true,
@@ -71,27 +72,31 @@ export const postTask = (task) => (dispatch) => {
 export const editTask = (task, taskId) => (dispatch) => {
 
     let formData = new FormData();
-    let token = 'beejee';
+    let token = '&token=beejee';
     let status = task.status ? 10 : 0;
     formData.append("status", status);
     console.log("status", taskId);
     formData.append("text", task.text);
     formData.append("token", token);
     let paramsString = `status=${status}&text=${task.text}`;
-    paramsString = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A") + '&token=beejee';
-    console.log("paramsString", paramsString);
-    let signature = md5(paramsString);
+    let paramsStringCode = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
+    if (validUrl.isUri(rmtUrl + `/edit/${taskId}` + paramsString)) {
+        console.log('Looks like an URI');
+    } else {
+        console.log('Not a URI');
+    }
+    let signature = md5(paramsStringCode);
     formData.append("signature", signature);
-    let endParams = paramsString  + '&signature=' + signature;
-//?${endParams}
+    let endParams = paramsString + token + '&signature=' + signature;
+    //?${endParams}
     return axios({
-        url: rmtUrl + `/edit/${taskId}`,
+        url: rmtUrl + `/edit/${taskId}/?` + endParams,
         type: 'POST',
         data: endParams,
         crossDomain: true,
         processData: false,  // tell jQuery not to process the data
         contentType: false,  // tell jQuery not to set contentType
-        headers: { 'Content-Type': 'text/plain' },
+        headers: { 'Content-Type': 'x-www-form-urlencoded' },
         method: 'POST',
         dataType: "json",
     })
@@ -112,11 +117,11 @@ export const editTask = (task, taskId) => (dispatch) => {
 
 };
 
-export const fetchTasks = () => (dispatch) => {
-
+export const fetchTasks = (pageId) => (dispatch) => {
+    console.log('pageId', pageId);
     dispatch(TasksLoading(true));
 
-    return fetch(rmtUrl + '?developer=Example')
+    return fetch(`${rmtUrl}?developer=Viktor&page=${pageId}`)
         .then(response => {
             if (response.ok) {
                 return response;
@@ -125,11 +130,11 @@ export const fetchTasks = () => (dispatch) => {
                 error.response = response;
                 throw error;
             }
-        }, // if there is response
+        },
             error => {
                 var errmess = new Error(error.message);
                 throw errmess;
-            }) // no response
+            })
         .then(response => response.json())
         .then(tasks => dispatch(addTasks(tasks.message.tasks)))
         .catch(error => dispatch(TasksFailed(error.message)));
@@ -137,7 +142,7 @@ export const fetchTasks = () => (dispatch) => {
 
 export const fetchTaskById = (taskId) => (dispatch) => {
 
-    return fetch(rmtUrl + '?developer=Example')
+    return fetch(rmtUrl + '?developer=Viktor')
         .then(response => {
             if (response.ok) {
                 return response;

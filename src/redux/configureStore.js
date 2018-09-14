@@ -1,13 +1,16 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createForms } from 'react-redux-form';
 
-import { Tasks, Task } from './tasks';
+import { Tasks } from './tasks';
+import { Task } from './taskEdit';
 import { Image } from './image';
 import { Admin } from './admin';
+import { PageID } from './pageId';
 
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { initialTask, initialEditTask } from './forms';
+import { initialTask } from './forms';
+import { initialEditTask } from './formEdit';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -17,6 +20,7 @@ export const ConfigureStore = () => {
             task: Task,
             image: Image,
             admin: Admin,
+            pageId: PageID,
 
             ...createForms({
                 task: initialTask,

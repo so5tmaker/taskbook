@@ -17,7 +17,6 @@ function LocalCard({item}) {
     )
 }
 
-
 export function RenderTask({ tasks, isLoading, errMess, admin }) {
     console.log('RenderTask', admin);
     if (isLoading) {
