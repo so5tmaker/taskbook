@@ -22,6 +22,24 @@ export const addAdmin = (admin) => ({
     payload: admin
 });
 
+export const setPageID = (pageId) => (dispatch) => {
+    dispatch(addPageID(pageId));
+}
+
+export const addPageID = (pageId) => ({
+    type: ActionTypes.ADD_PAGEID,
+    payload: pageId
+});
+
+export const setPageQuantity = (pageQuantity) => (dispatch) => {
+    dispatch(addPageQuantity(pageQuantity));
+}
+
+export const addPageQuantity = (pageQuantity) => ({
+    type: ActionTypes.ADD_PAGEQUANTITY,
+    payload: pageQuantity
+});
+
 export const TaskFailed = (errMess) => ({
     type: ActionTypes.TASK_FAILED,
     payload: errMess
@@ -119,7 +137,7 @@ export const editTask = (task, taskId) => (dispatch) => {
 
 export const fetchTasks = (pageId) => (dispatch) => {
     console.log('pageId', pageId);
-    dispatch(TasksLoading(true));
+    //dispatch(TasksLoading(true));
 
     return fetch(`${rmtUrl}?developer=Viktor&page=${pageId}`)
         .then(response => {

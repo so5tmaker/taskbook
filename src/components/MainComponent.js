@@ -9,7 +9,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask } from '../redux/ActionCreators';
+import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask, setPageID } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 
@@ -20,6 +20,7 @@ const mapDispatchToProps = dispatch => ({
     setAdmin: (admin) => dispatch(setAdmin(admin)),
     editTask: (task, taskId) => dispatch(editTask(task, taskId)),
     fetchTaskById: (taskId) => dispatch(fetchTaskById(taskId)),
+    setPageID: (pageId) => dispatch(setPageID(pageId))
 });
 
 const mapStateToProps = state => {
@@ -27,14 +28,15 @@ const mapStateToProps = state => {
         tasks: state.tasks,
         image: null,
         admin: false,
-        taskId: state.taskId
+        pageId: state.pageId
     }
 };
 
 class Main extends Component {
 
     componentDidMount() {
-        this.props.fetchTasks(this.props.taskId);
+        console.log('componentDidMount', this.props.pageId.pageId);
+        this.props.fetchTasks(this.props.pageId.pageId);
     }
 
     // Access store by defining context types
@@ -61,7 +63,11 @@ class Main extends Component {
             );
         }
 
-        const TaskWithIds = ({ match }) => {
+        const TaskWithPage = ({ match }) => {
+            //this.props.fetchTaskById(5589);
+            this.props.fetchTasks(match.params.pageId);
+            console.log('match.params.pageId', match.params.pageId);
+            //this.props.setPageID(match.params.pageId);
             let itemsOnPage = 3;
             const tasksLength = this.props.tasks.tasks.length;
             let index = match.params.pageId - 1;
@@ -69,7 +75,7 @@ class Main extends Component {
             let end = start + (itemsOnPage - 1);
             end = (end > tasksLength) ? tasksLength - 1 : end;
             let numbers = [];
-            console.log('TaskWithIds', numbers);
+            console.log('TaskWithPage', numbers);
             for (let index = start; index <= end; index++) {
                 numbers.push(this.props.tasks.tasks[index]);
             }
@@ -116,7 +122,7 @@ class Main extends Component {
                     <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
                         <Switch>
                             <Route path="/home" component={HomePage} />
-                            <Route path="/page/:pageId" component={TaskWithIds} />
+                            <Route path="/page/:pageId" component={TaskWithPage} />
                             <Route exact path="/create"
                                 component={() => <Create postTask={this.props.postTask} setImage={this.props.setImage}
                                 />}
