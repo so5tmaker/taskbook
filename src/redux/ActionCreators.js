@@ -53,7 +53,7 @@ export const postTask = (task) => (dispatch) => {
     formData.append("image", fileField.files[0]);
 
     return axios({
-        url: rmtUrl + 'create?developer=Example',
+        url: `${rmtUrl}create?developer=${developer}`,
         type: 'POST',
         data: formData,
         crossDomain: true,
@@ -86,7 +86,6 @@ export const editTask = (task, taskId) => (dispatch) => {
     let token = '&token=beejee';
     let status = task.status ? 10 : 0;
     formData.append("status", status);
-    console.log("status", taskId);
     formData.append("text", task.text);
     formData.append("token", token);
     let paramsString = `status=${status}&text=${task.text}`;
@@ -99,7 +98,7 @@ export const editTask = (task, taskId) => (dispatch) => {
     let signature = md5(paramsStringCode);
     formData.append("signature", signature);
     let endParams = paramsString + token + '&signature=' + signature;
-    //?${endParams}
+
     return axios({
         url: rmtUrl + `/edit/${taskId}/?` + endParams,
         type: 'POST',
@@ -156,7 +155,7 @@ export const fetchTasks = (pageId) => (dispatch) => {
 
 export const fetchTaskById = (taskId) => (dispatch) => {
 
-    return fetch(rmtUrl + '?developer=Example')
+    return fetch(`${rmtUrl}?developer=${developer}`)
         .then(response => {
             if (response.ok) {
                 return response;

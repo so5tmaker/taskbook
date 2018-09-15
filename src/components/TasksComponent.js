@@ -18,7 +18,6 @@ function LocalCard({item}) {
 }
 
 export function RenderTask({ tasks, isLoading, errMess, admin }) {
-    console.log('RenderTask', admin);
     if (isLoading) {
         return (
             <Loading />
@@ -32,7 +31,7 @@ export function RenderTask({ tasks, isLoading, errMess, admin }) {
         return (tasks.map((item) => {
             return (
                 <div className='col-12 col-md m-1'>
-                    {admin ? <Link to={`/edit/${item.id}`}><LocalCard item={item} /></Link> : <LocalCard item={item} />}
+                    {admin ? <Link to={`/edit/${item.id}`}><LocalCard item={item} /></Link> : <Link to={`/home/${item.id}`}><LocalCard item={item} /></Link>}
                 </div>
             );
         }));
