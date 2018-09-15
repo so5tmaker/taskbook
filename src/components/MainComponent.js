@@ -25,7 +25,7 @@ const mapStateToProps = state => {
     return {
         tasks: state.tasks,
         image: null,
-        admin: false,
+        admin: state.admin,
         pageId: state.pageId
     }
 };
@@ -56,7 +56,6 @@ class Main extends Component {
                     allProps={this.props}
                     tasksLoading={this.props.tasks.tasks.isLoading}
                     taskErrMess={this.props.tasks.tasks.errMess}
-                    admin={this.formValues.admin.admin}
                     fetchTasks={this.props.fetchTasks}
                     pageIdParams={"1"}
                     pageId={this.formValues.pageId.pageId}
@@ -71,7 +70,6 @@ class Main extends Component {
                     tasks={this.props.tasks.tasks.tasks}
                     tasksLoading={this.props.tasks.tasks.isLoading}
                     taskErrMess={this.props.tasks.tasks.errMess}
-                    admin={this.formValues.admin.admin}
                     fetchTasks={this.props.fetchTasks}
                     pageIdParams={match.params.pageId}
                     pageId={this.formValues.pageId.pageId}
@@ -89,6 +87,7 @@ class Main extends Component {
                             <Edit task={this.props.tasks.tasks.tasks}
                                 taskId={match.params.taskId}
                                 editTask={this.props.editTask}
+                                admin={this.props.admin.admin}
                             />
                         </div>
                     </div>

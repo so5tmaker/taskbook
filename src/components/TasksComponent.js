@@ -3,7 +3,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Loading } from './LoadingComponent';
 import { Link } from 'react-router-dom';
 
-function LocalCard({item}) {
+export function LocalCard({ item }) {
     return (
         <Card>
             <CardImg src={item.image_path} alt={item.username} />
@@ -17,7 +17,7 @@ function LocalCard({item}) {
     )
 }
 
-export function RenderTask({ tasks, isLoading, errMess, admin }) {
+export function RenderTask({ tasks, isLoading, errMess }) {
     if (isLoading) {
         return (
             <Loading />
@@ -31,7 +31,7 @@ export function RenderTask({ tasks, isLoading, errMess, admin }) {
         return (tasks.map((item) => {
             return (
                 <div className='col-12 col-md m-1'>
-                    {admin ? <Link to={`/edit/${item.id}`}><LocalCard item={item} /></Link> : <LocalCard item={item} />}
+                    {<Link to={`/edit/${item.id}`}><LocalCard item={item} /></Link>}
                 </div>
             );
         }));
