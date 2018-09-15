@@ -10,5 +10,3 @@ export const ADD_IMAGE = 'ADD_IMAGE';
 export const ADD_ADMIN = 'ADD_ADMIN';
 
 export const ADD_PAGEID = 'ADD_PAGEID';
-
-export const ADD_PAGEQUANTITY = 'ADD_PAGEQUANTITY';

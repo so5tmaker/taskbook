@@ -18,19 +18,12 @@ function RenderPagination({ index }) {
 
 export class Paginate extends Component {
 
-    handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
-        this.setState({ activePage: pageNumber });
-    }
-
     render() {
 
-        const RenderPaginations = (tasks, isLoading) => {
-            const tasksLength = tasks.tasks.length;
-            console.log('RenderPaginations tasksLength', tasksLength);
+        const RenderPaginations = (tasks) => {
+            const tasksLength = tasks.pageQuantity;
             let numbers = [];
             let length = Math.ceil(tasksLength / 3);
-            console.log('RenderPaginations isLoading', isLoading);
             for (let index = 0; index < length; index++) {
                 numbers[index] = index;
             }
@@ -57,7 +50,11 @@ export class Paginate extends Component {
                     <div className="container">
                         <div className="row justify-content-center">
                             <div className="col-auto">
-                                <RenderPaginations tasks={this.props.tasks} isLoading={this.props.tasks.isLoading} />
+                                <RenderPaginations 
+                                tasks={this.props.tasks} 
+                                isLoading={this.props.tasks.isLoading} 
+                                pageQuantity={this.props.pageQuantity}
+                                />
                             </div>
                         </div>
                     </div>

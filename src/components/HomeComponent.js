@@ -3,23 +3,33 @@ import { RenderTask } from './TasksComponent';
 import Paginate from './PaginationComponent';
 
 function Home(props) {
-    return (
-        <div>
-            <div className='container'>
-                <div className='row align-items-start'>
-                    <RenderTask tasks={props.tasks}
-                        isLoading={props.tasksLoading}
-                        errMess={props.tasksErrMess}
-                        admin={props.admin}
-                    />
+    if (props.tasks) {
+        if (props.pageId) {
+            if (props.pageId !== props.pageIdParams) {
+                props.fetchTasks(props.pageIdParams);
+            }
+        }
+        return (
+            <div>
+                <div className='container'>
+                    <div className='row align-items-start'>
+                        <RenderTask tasks={props.tasks}
+                            isLoading={props.tasksLoading}
+                            errMess={props.tasksErrMess}
+                            admin={props.admin}
+                        />
+                    </div>
                 </div>
+                <Paginate tasks={props.tasks}
+                    isLoading={props.tasksLoading}
+                    errMess={props.tasksErrMess}
+                    pageQuantity={props.pageQuantity}
+                />
             </div>
-            <Paginate tasks={props.tasks}
-                isLoading={props.tasksLoading}
-                errMess={props.tasksErrMess}
-            />
-        </div>
-    )
+        );
+    } else {
+        return (<div></div>);
+    }
 }
 
 export default Home;

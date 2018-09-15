@@ -6,7 +6,6 @@ import { Task } from './taskEdit';
 import { Image } from './image';
 import { Admin } from './admin';
 import { PageID } from './pageId';
-import { PageQuantity } from './pageQuantity';
 
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -22,7 +21,6 @@ export const ConfigureStore = () => {
             image: Image,
             admin: Admin,
             pageId: PageID,
-            pageQuantity: PageQuantity,
 
             ...createForms({
                 task: initialTask,

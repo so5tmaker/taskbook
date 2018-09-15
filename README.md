@@ -1,2 +1,2 @@
-# Tasks List
-The React App for Creating Tasks List
+# ReactRestaurant
+The React App for Restaurant

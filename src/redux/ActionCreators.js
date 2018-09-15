@@ -4,6 +4,8 @@ import axios from 'axios';
 import md5 from 'md5';
 import validUrl from 'valid-url';
 
+const developer = "Viktor";
+
 export const setImage = (image) => (dispatch) => {
     dispatch(addImage(image));
 }
@@ -31,15 +33,6 @@ export const addPageID = (pageId) => ({
     payload: pageId
 });
 
-export const setPageQuantity = (pageQuantity) => (dispatch) => {
-    dispatch(addPageQuantity(pageQuantity));
-}
-
-export const addPageQuantity = (pageQuantity) => ({
-    type: ActionTypes.ADD_PAGEQUANTITY,
-    payload: pageQuantity
-});
-
 export const TaskFailed = (errMess) => ({
     type: ActionTypes.TASK_FAILED,
     payload: errMess
@@ -60,7 +53,7 @@ export const postTask = (task) => (dispatch) => {
     formData.append("image", fileField.files[0]);
 
     return axios({
-        url: rmtUrl + 'create?developer=Viktor',
+        url: rmtUrl + 'create?developer=Example',
         type: 'POST',
         data: formData,
         crossDomain: true,
@@ -136,10 +129,10 @@ export const editTask = (task, taskId) => (dispatch) => {
 };
 
 export const fetchTasks = (pageId) => (dispatch) => {
-    console.log('pageId', pageId);
-    //dispatch(TasksLoading(true));
 
-    return fetch(`${rmtUrl}?developer=Viktor&page=${pageId}`)
+    dispatch(TasksLoading(false));
+
+    return fetch(`${rmtUrl}?developer=${developer}&page=${pageId}`)
         .then(response => {
             if (response.ok) {
                 return response;
@@ -154,13 +147,16 @@ export const fetchTasks = (pageId) => (dispatch) => {
                 throw errmess;
             })
         .then(response => response.json())
-        .then(tasks => dispatch(addTasks(tasks.message.tasks)))
+        .then(tasks => {
+            dispatch(addPageID(pageId));
+            dispatch(addTasks(tasks.message));
+        })
         .catch(error => dispatch(TasksFailed(error.message)));
 }
 
 export const fetchTaskById = (taskId) => (dispatch) => {
 
-    return fetch(rmtUrl + '?developer=Viktor')
+    return fetch(rmtUrl + '?developer=Example')
         .then(response => {
             if (response.ok) {
                 return response;

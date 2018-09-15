@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Create from './CreateComponent';
 import Edit from './EditComponent';
-import RenderTask from './TasksComponent';
-import Paginate from './PaginationComponent';
 import Preview from './PreviewComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
@@ -35,8 +33,7 @@ const mapStateToProps = state => {
 class Main extends Component {
 
     componentDidMount() {
-        console.log('componentDidMount', this.props.pageId.pageId);
-        this.props.fetchTasks(this.props.pageId.pageId);
+        this.props.fetchTasks("1");
     }
 
     // Access store by defining context types
@@ -54,47 +51,32 @@ class Main extends Component {
     render() {
         const HomePage = () => {
             return (
-            <Home fetchTasks={this.props.fetchTasks}
-                    tasks={this.props.tasks.tasks}
-                    tasksLoading={this.props.tasks.isLoading}
-                    taskErrMess={this.props.tasks.errMess}
+                <Home
+                    tasks={this.props.tasks.tasks.tasks}
+                    allProps={this.props}
+                    tasksLoading={this.props.tasks.tasks.isLoading}
+                    taskErrMess={this.props.tasks.tasks.errMess}
                     admin={this.formValues.admin.admin}
+                    fetchTasks={this.props.fetchTasks}
+                    pageIdParams={"1"}
+                    pageId={this.formValues.pageId.pageId}
+                    pageQuantity={parseInt(this.props.tasks.tasks.total_task_count, 10)}
                 />
             );
         }
 
         const TaskWithPage = ({ match }) => {
-            //this.props.fetchTaskById(5589);
-            this.props.fetchTasks(match.params.pageId);
-            console.log('match.params.pageId', match.params.pageId);
-            //this.props.setPageID(match.params.pageId);
-            let itemsOnPage = 3;
-            const tasksLength = this.props.tasks.tasks.length;
-            let index = match.params.pageId - 1;
-            let start = index * itemsOnPage;
-            let end = start + (itemsOnPage - 1);
-            end = (end > tasksLength) ? tasksLength - 1 : end;
-            let numbers = [];
-            console.log('TaskWithPage', numbers);
-            for (let index = start; index <= end; index++) {
-                numbers.push(this.props.tasks.tasks[index]);
-            }
             return (
-                <div>
-                    <div className='container'>
-                        <div className='row align-items-start'>
-                            <RenderTask tasks={numbers}
-                                isLoading={this.props.tasks.isLoading}
-                                errMess={this.props.tasks.errMess}
-                                admin={this.formValues.admin.admin}
-                            />
-                        </div>
-                    </div>
-                    <Paginate tasks={this.props.tasks.tasks}
-                        isLoading={this.props.tasks.tasksLoading}
-                        errMess={this.props.tasks.tasksErrMess}
-                    />
-                </div>
+                <Home
+                    tasks={this.props.tasks.tasks.tasks}
+                    tasksLoading={this.props.tasks.tasks.isLoading}
+                    taskErrMess={this.props.tasks.tasks.errMess}
+                    admin={this.formValues.admin.admin}
+                    fetchTasks={this.props.fetchTasks}
+                    pageIdParams={match.params.pageId}
+                    pageId={this.formValues.pageId.pageId}
+                    pageQuantity={parseInt(this.props.tasks.tasks.total_task_count, 10)}
+                />
             )
         }
 
@@ -127,8 +109,7 @@ class Main extends Component {
                                 component={() => <Create postTask={this.props.postTask} setImage={this.props.setImage}
                                 />}
                             />
-                            <Route path="/edit/:taskId"
-                                component={TaskWithId}
+                            <Route path="/edit/:taskId" component={TaskWithId}
                             />
                             <Route exact path="/preview" component={() => <Preview tasks={this.props.tasks.tasks} />} />
                             <Redirect to="/home" />
