@@ -86,7 +86,7 @@ class Main extends Component {
                 <div>
                     <div className='container'>
                         <div className='row align-items-start'>
-                            <Edit task={this.props.tasks.tasks}
+                            <Edit task={this.props.tasks.tasks.tasks}
                                 taskId={match.params.taskId}
                                 editTask={this.props.editTask}
                             />

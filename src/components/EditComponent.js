@@ -19,13 +19,13 @@ class Edit extends Component {
     }
 
     render() {
-        let task = this.props.task.filter(task => task.id === parseInt(this.props.taskId, 10))[0];
-        if (!task) {
-            task = {
-                username: '',
-                email: '',
-                text: ''
-            }
+        let task = {
+            username: '',
+            email: '',
+            text: ''
+        }
+        if (this.props.task) {
+            task = this.props.task.filter(task => task.id === parseInt(this.props.taskId, 10))[0];
         }
         return (
             <div className="container">

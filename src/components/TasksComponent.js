@@ -31,7 +31,7 @@ export function RenderTask({ tasks, isLoading, errMess, admin }) {
         return (tasks.map((item) => {
             return (
                 <div className='col-12 col-md m-1'>
-                    {admin ? <Link to={`/edit/${item.id}`}><LocalCard item={item} /></Link> : <Link to={`/home/${item.id}`}><LocalCard item={item} /></Link>}
+                    {admin ? <Link to={`/edit/${item.id}`}><LocalCard item={item} /></Link> : <LocalCard item={item} />}
                 </div>
             );
         }));

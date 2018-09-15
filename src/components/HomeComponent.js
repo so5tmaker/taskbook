@@ -1,6 +1,7 @@
 import React from 'react';
 import { RenderTask } from './TasksComponent';
 import Paginate from './PaginationComponent';
+import { Redirect } from 'react-router-dom';
 
 function Home(props) {
     if (props.tasks) {
