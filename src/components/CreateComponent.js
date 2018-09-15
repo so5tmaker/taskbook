@@ -5,6 +5,7 @@ import {
     Button, Row, Col, Label
 } from 'reactstrap';
 import { Control, Form, Errors } from 'react-redux-form';
+import { Upload } from './FileUploadComponent';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -30,7 +31,7 @@ class Create extends Component {
         let files = e.target.files;
         let reader = new FileReader();
         reader.readAsDataURL(files[0]);
-        
+
         reader.onloadend = () => {
             this.setState({
                 file: files[0],
@@ -132,6 +133,7 @@ class Create extends Component {
                             </Row>
                         </Form>
                         }
+                        <Upload />
                     </div>
                 </div>
             </div>
