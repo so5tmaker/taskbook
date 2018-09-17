@@ -27,8 +27,7 @@ const mapStateToProps = state => {
         image: null,
         admin: state.admin,
         pageId: state.pageId,
-        sortfield: state.sortfield, 
-        sortdirection: state.sortdirection
+        fieldValues: state.fieldValues
     }
 };
 
@@ -61,8 +60,7 @@ class Main extends Component {
                     pageIdParams={"1"}
                     pageId={this.formValues.pageId.pageId}
                     pageQuantity={parseInt(this.props.tasks.tasks.total_task_count, 10)}
-                    sortField={this.props.sortfield} 
-                    sortDirection={this.props.sortdirection}
+                    fieldValues={this.props.fieldValues} 
                 />
             );
         }

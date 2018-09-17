@@ -24,8 +24,7 @@ function Home(props) {
                 <Sorting
                     fetchTasks={props.fetchTasks}
                     pageId={props.pageIdParams}
-                    sortField={props.sortField}
-                    sortDirection={props.sortDirection}
+                    fieldValues={props.fieldValues} 
                 />
                 <Paginate tasks={props.tasks}
                     isLoading={props.tasksLoading}

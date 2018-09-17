@@ -6,6 +6,7 @@ import { Task } from './taskEdit';
 import { Image } from './image';
 import { Admin } from './admin';
 import { PageID } from './pageId';
+import { FieldValues } from './fieldValues';
 
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -21,6 +22,7 @@ export const ConfigureStore = () => {
             image: Image,
             admin: Admin,
             pageId: PageID,
+            fieldValues: FieldValues,
 
             ...createForms({
                 task: initialTask,
