@@ -60,7 +60,7 @@ class Main extends Component {
                     pageIdParams={"1"}
                     pageId={this.formValues.pageId.pageId}
                     pageQuantity={parseInt(this.props.tasks.tasks.total_task_count, 10)}
-                    fieldValues={this.props.fieldValues} 
+                    fieldValues={this.props.fieldValues.fieldValues} 
                 />
             );
         }
@@ -75,6 +75,7 @@ class Main extends Component {
                     pageIdParams={match.params.pageId}
                     pageId={this.formValues.pageId.pageId}
                     pageQuantity={parseInt(this.props.tasks.tasks.total_task_count, 10)}
+                    fieldValues={this.props.fieldValues.fieldValues} 
                 />
             )
         }

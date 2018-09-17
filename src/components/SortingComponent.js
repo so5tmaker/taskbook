@@ -5,23 +5,23 @@ class Sorting extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            sortfield: 'id',
-            sortdirection: 'asc'
-        };
+        // this.state = {
+        //     sortfield: 'id',
+        //     sortdirection: 'asc'
+        // };
     }
 
     SortPage(e, fetchTasks, pageId, sortField, sortDirection) {
-        let localSortField = sortField ? sortField : this.state.sortfield;
-        let localSortDirection = sortDirection ? sortDirection : this.state.sortdirection;
+        let localSortField = sortField ? sortField : this.props.fieldValues.sortfield;
+        let localSortDirection = sortDirection ? sortDirection : this.props.fieldValues.sortdirection;
         fetchTasks(pageId, localSortField, localSortDirection);
-        this.setState({
-            sortfield: localSortField,
-            sortdirection: localSortDirection
-        }, () => {
-            // only now the state was updated
-            console.log("Data is here", this.state.sortfield);
-        });
+        // this.setState({
+        //     sortfield: localSortField,
+        //     sortdirection: localSortDirection
+        // }, () => {
+        //     // only now the state was updated
+        //     console.log("Data is here", this.state.sortfield);
+        // });
     }
 
     render() {
