@@ -127,11 +127,11 @@ export const editTask = (task, taskId) => (dispatch) => {
 
 };
 
-export const fetchTasks = (pageId) => (dispatch) => {
+export const fetchTasks = (pageId, sortField='username', sortDirection='asc') => (dispatch) => {
 
     dispatch(TasksLoading(false));
 
-    return fetch(`${rmtUrl}?developer=${developer}&page=${pageId}`)
+    return fetch(`${rmtUrl}?developer=${developer}&page=${pageId}&sort_field=${sortField}&sort_direction=${sortDirection}`)
         .then(response => {
             if (response.ok) {
                 return response;

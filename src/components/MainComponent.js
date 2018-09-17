@@ -12,7 +12,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 
 const mapDispatchToProps = dispatch => ({
-    fetchTasks: (pageId) => dispatch(fetchTasks(pageId)),
+    fetchTasks: (pageId, sortField, sortDirection) => dispatch(fetchTasks(pageId, sortField, sortDirection)),
     postTask: (task) => dispatch(postTask(task)),
     setImage: (image) => dispatch(setImage(image)),
     setAdmin: (admin) => dispatch(setAdmin(admin)),

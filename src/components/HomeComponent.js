@@ -1,6 +1,7 @@
 import React from 'react';
 import { RenderTask } from './TasksComponent';
 import Paginate from './PaginationComponent';
+import Sorting from './SortingComponent';
 
 function Home(props) {
     if (props.tasks) {
@@ -20,6 +21,7 @@ function Home(props) {
                         />
                     </div>
                 </div>
+                <Sorting fetchTasks={props.fetchTasks} pageId={props.pageIdParams} />
                 <Paginate tasks={props.tasks}
                     isLoading={props.tasksLoading}
                     errMess={props.tasksErrMess}
