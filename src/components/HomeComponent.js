@@ -21,7 +21,12 @@ function Home(props) {
                         />
                     </div>
                 </div>
-                <Sorting fetchTasks={props.fetchTasks} pageId={props.pageIdParams} />
+                <Sorting
+                    fetchTasks={props.fetchTasks}
+                    pageId={props.pageIdParams}
+                    sortField={props.sortField}
+                    sortDirection={props.sortDirection}
+                />
                 <Paginate tasks={props.tasks}
                     isLoading={props.tasksLoading}
                     errMess={props.tasksErrMess}

@@ -33,6 +33,11 @@ export const addPageID = (pageId) => ({
     payload: pageId
 });
 
+export const addFieldsValues = (values) => ({
+    type: ActionTypes.ADD_FIELDSVALUES,
+    payload: values
+});
+
 export const TaskFailed = (errMess) => ({
     type: ActionTypes.TASK_FAILED,
     payload: errMess
@@ -127,7 +132,7 @@ export const editTask = (task, taskId) => (dispatch) => {
 
 };
 
-export const fetchTasks = (pageId, sortField='username', sortDirection='asc') => (dispatch) => {
+export const fetchTasks = (pageId, sortField = 'username', sortDirection = 'asc') => (dispatch) => {
 
     dispatch(TasksLoading(false));
 
@@ -148,6 +153,7 @@ export const fetchTasks = (pageId, sortField='username', sortDirection='asc') =>
         .then(response => response.json())
         .then(tasks => {
             dispatch(addPageID(pageId));
+            dispatch(addFieldsValues({ sortfield: sortField, sortdirection: sortDirection }));
             dispatch(addTasks(tasks.message));
         })
         .catch(error => dispatch(TasksFailed(error.message)));

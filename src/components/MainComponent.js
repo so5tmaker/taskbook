@@ -26,7 +26,9 @@ const mapStateToProps = state => {
         tasks: state.tasks,
         image: null,
         admin: state.admin,
-        pageId: state.pageId
+        pageId: state.pageId,
+        sortfield: state.sortfield, 
+        sortdirection: state.sortdirection
     }
 };
 
@@ -53,13 +55,14 @@ class Main extends Component {
             return (
                 <Home
                     tasks={this.props.tasks.tasks.tasks}
-                    allProps={this.props}
                     tasksLoading={this.props.tasks.tasks.isLoading}
                     taskErrMess={this.props.tasks.tasks.errMess}
                     fetchTasks={this.props.fetchTasks}
                     pageIdParams={"1"}
                     pageId={this.formValues.pageId.pageId}
                     pageQuantity={parseInt(this.props.tasks.tasks.total_task_count, 10)}
+                    sortField={this.props.sortfield} 
+                    sortDirection={this.props.sortdirection}
                 />
             );
         }
