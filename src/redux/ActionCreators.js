@@ -3,6 +3,7 @@ import { rmtUrl } from '../shared/baseUrl';
 import axios from 'axios';
 import md5 from 'md5';
 import validUrl from 'valid-url';
+import { Redirect } from 'react-router-dom';
 
 const developer = "Viktor";
 
@@ -80,8 +81,8 @@ export const postTask = (task) => (dispatch) => {
             error => {
                 throw error;
             })
-        .then(response => { dispatch(addTasks(response)); alert("Thank you for your task!\n" + JSON.stringify(response.data)); })
-        .catch(error => { console.log('post task', error.message); alert('Your task could not be posted\nError: ' + error.message); });
+        .then(response => { dispatch(addTasks(response)); window.location.replace("/");/*alert("Thank you for your task!\n" + JSON.stringify(response.data));*/ })
+        .catch(error => { console.log('post task', error.message); /*alert('Your task could not be posted\nError: ' + error.message);*/ });
 
 };
 
