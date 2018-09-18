@@ -62,8 +62,8 @@ export const postTask = (task) => (dispatch) => {
         type: 'POST',
         data: formData,
         crossDomain: true,
-        processData: false,  // tell jQuery not to process the data
-        contentType: false,  // tell jQuery not to set contentType
+        processData: false,  
+        contentType: false,  
         headers: { 'Content-Type': 'multipart/form-data' },
         method: 'POST',
         dataType: "json",
@@ -93,24 +93,29 @@ export const editTask = (task, taskId) => (dispatch) => {
     formData.append("status", status);
     formData.append("text", task.text);
     formData.append("token", token);
-    let paramsString = `status=${status}&text=${task.text}`;
-    let paramsStringCode = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
-    if (validUrl.isUri(rmtUrl + `/edit/${taskId}` + paramsString)) {
+    let paramsString = `status=${status}&text=${task.text}${token}`;
+    let paramsStringCode = encodeURIComponent(paramsString).replace(/[!'()*]/g, (c) => {
+        return '%' + c.charCodeAt(0).toString(16);
+    });
+    //let paramsStringCode = encodeURIComponent(paramsString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
+
+    let signature = md5(paramsStringCode);
+    formData.append("signature", signature);
+    let endParams = paramsStringCode + '&signature=' + signature;
+
+    if (validUrl.isUri(rmtUrl + `/edit/${taskId}/?${endParams}`)) {
         console.log('Looks like an URI');
     } else {
         console.log('Not a URI');
     }
-    let signature = md5(paramsStringCode);
-    formData.append("signature", signature);
-    let endParams = paramsString + token + '&signature=' + signature;
 
     return axios({
-        url: rmtUrl + `/edit/${taskId}/?` + endParams,
+        url: rmtUrl + `/edit/${taskId}/?${endParams}`,
         type: 'POST',
-        data: endParams,
+        //data: endParams,
         crossDomain: true,
-        processData: false,  // tell jQuery not to process the data
-        contentType: false,  // tell jQuery not to set contentType
+        processData: false,
+        contentType: false,
         headers: { 'Content-Type': 'x-www-form-urlencoded' },
         method: 'POST',
         dataType: "json",
@@ -128,7 +133,7 @@ export const editTask = (task, taskId) => (dispatch) => {
                 throw error;
             })
         .then(response => { dispatch(addTasks(response)); alert("Thank you for your task!\n" + JSON.stringify(response.data)); })
-        .catch(error => { console.log('post task', error); /*alert('Your task could not be posted\nError: ' + error.message);*/ });
+        .catch(error => { console.log('post task', error); });
 
 };
 

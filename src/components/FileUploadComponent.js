@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-function resize (file, maxWidth, maxHeight, fn) {
+export const Resize = (file, maxWidth, maxHeight, fn) => {
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function (event) {
@@ -15,7 +15,7 @@ function resize (file, maxWidth, maxHeight, fn) {
     };
 }
 
-function resizeImage(image, maxWidth, maxHeight, quality) {
+export function resizeImage(image, maxWidth, maxHeight, quality) {
     var canvas = document.createElement('canvas');
 
     var width = image.width;
@@ -48,6 +48,7 @@ export class ScalingUpload extends Component {
         this.state = {
             dataUrl: ''
         };
+        this._onChange = this._onChange.bind(this);
     }
 
     _onChange(e) {
@@ -55,7 +56,7 @@ export class ScalingUpload extends Component {
         var self = this;
         var maxWidth = this.props.maxWidth;
         var maxHeight = this.props.maxHeight;
-        resize(files[0], maxWidth, maxHeight, function (resizedDataUrl) {
+        Resize(files[0], maxWidth, maxHeight, function (resizedDataUrl) {
             self.setState({ dataUrl: resizedDataUrl });
         });
     }
@@ -65,27 +66,14 @@ export class ScalingUpload extends Component {
 
         let dataUrl = this.state.dataUrl;
         if (dataUrl) {
-            image = <img src={dataUrl} alt='Upload example'/>
+            image = <img src={dataUrl} alt='Upload example' />
         }
 
         return <div>
-            <input ref="upload" type="file" accept="image/*" onChange={ this._onChange }/>
-            { image }
+            <input ref="upload" type="file" accept="image/*" onChange={this._onChange} />
+            {image}
         </div>
     }
 }
 
-export class Upload extends Component{
-
-    _onChange(file) {
-        console.log('done', file);
-    }
-
-    render() {
-        return <div>
-            <ScalingUpload maxHeight={320} maxWidth={240} onChange={ this._onChange } />
-        </div>
-    }
-}
-
-export default Upload;
+export default ScalingUpload;

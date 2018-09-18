@@ -5,7 +5,7 @@ import {
     Button, Row, Col, Label
 } from 'reactstrap';
 import { Control, Form, Errors } from 'react-redux-form';
-import { Upload } from './FileUploadComponent';
+import { Resize } from './FileUploadComponent';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -17,7 +17,7 @@ class Create extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: '',
+            dataUrl: '',
             imagePreviewUrl: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,12 +29,16 @@ class Create extends Component {
 
     handleChange = (e) => {
         let files = e.target.files;
+        let self = this;
+        Resize(files[0], 320, 240, (resizedDataUrl) => {
+            self.setState({ dataUrl: resizedDataUrl });
+        });
+
         let reader = new FileReader();
         reader.readAsDataURL(files[0]);
 
         reader.onloadend = () => {
             this.setState({
-                file: files[0],
                 imagePreviewUrl: [reader.result]
             });
             let { imagePreviewUrl } = this.state;
@@ -43,6 +47,13 @@ class Create extends Component {
     }
 
     render() {
+        let image;
+
+        let { dataUrl } = this.state;
+        if (dataUrl) {
+            this.props.setImage(dataUrl);
+            image = <img src={dataUrl} alt='Upload example' />
+        }
         return (
             <div className="container">
                 <div className="row">
@@ -114,6 +125,7 @@ class Create extends Component {
                             <Row className="form-group">
                                 <Col md={10}>
                                     <Control.file onChange={e => this.handleChange(e)} model=".fileUpload" name='fileUpload' />
+                                    {image}
                                 </Col>
                             </Row>
                             <Row className="form-group">
@@ -133,7 +145,6 @@ class Create extends Component {
                             </Row>
                         </Form>
                         }
-                        <Upload />
                     </div>
                 </div>
             </div>
