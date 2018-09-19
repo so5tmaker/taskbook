@@ -28,7 +28,7 @@ class Edit extends Component {
         if (this.props.task) {
             task = this.props.task.filter(task => task.id === parseInt(this.props.taskId, 10))[0];
         }
-        if (!this.props.admin) {
+        if (this.props.admin) {
             return (
                 <div className='col-12 col-md m-1'>
                     <LocalCard item={task} />
