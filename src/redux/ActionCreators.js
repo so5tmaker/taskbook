@@ -80,8 +80,8 @@ export const postTask = (task) => (dispatch) => {
             error => {
                 throw error;
             })
-        .then(response => { dispatch(addTasks(response)); window.location.replace("/create");/*alert("Thank you for your task!\n" + JSON.stringify(response.data));*/ })
-        .catch(error => { console.log('post task', error.message); /*alert('Your task could not be posted\nError: ' + error.message);*/ });
+        .then(response => { dispatch(addTask(response)); window.location.replace("/home");/*alert("Thank you for your task!\n" + JSON.stringify(response.data));*/ })
+        .catch(error => { console.log('post task', error.message); alert('Your task could not be posted\nError: ' + error.message); });
 
 };
 
@@ -137,7 +137,7 @@ export const editTask = (task, taskId) => (dispatch) => {
 
 };
 
-export const fetchTasks = (pageId, sortField = 'username', sortDirection = 'asc') => (dispatch) => {
+export const fetchTasks = (pageId, sortField = 'id', sortDirection = 'asc') => (dispatch) => {
 
     dispatch(TasksLoading(false));
 

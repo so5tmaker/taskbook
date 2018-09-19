@@ -18,13 +18,14 @@ class Create extends Component {
         super(props);
         this.state = {
             dataUrl: '',
-            imagePreviewUrl: ''
+            imagePreviewUrl: '',
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(values) {
         this.props.postTask(values);
+        
     }
 
     handleChange = (e) => {

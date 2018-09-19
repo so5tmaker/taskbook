@@ -7,7 +7,9 @@ function Home(props) {
     if (props.tasks) {
         if (props.pageId) {
             if (props.pageId !== props.pageIdParams) {
-                props.fetchTasks(props.pageIdParams);
+                let sortField = props.fieldValues.sortfield ? props.fieldValues.sortfield : 'id';
+                let sortDirection = props.fieldValues.sortdirection ? props.fieldValues.sortdirection : 'asc';
+                props.fetchTasks(props.pageIdParams, sortField, sortDirection);
             }
         }
         return (
@@ -24,7 +26,7 @@ function Home(props) {
                 <Sorting
                     fetchTasks={props.fetchTasks}
                     pageId={props.pageIdParams}
-                    fieldValues={props.fieldValues} 
+                    fieldValues={props.fieldValues}
                 />
                 <Paginate tasks={props.tasks}
                     isLoading={props.tasksLoading}
