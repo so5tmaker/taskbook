@@ -12,12 +12,31 @@ class Edit extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            "text":''
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.textChange = this.textChange.bind(this);
+    }
+
+    componentDidMount(prevProps, prevState, snapshot){
+        if (this.props.task) {
+            let task = this.props.task.filter(task => task.id === parseInt(this.props.taskId, 10))[0];
+            this.setState({
+                "text": task.text
+             });
+        }
     }
 
     handleSubmit(values) {
         this.props.editTask(values, this.props.taskId);
     }
+
+    textChange(evt) {
+        this.setState({
+           [evt.target.name]: [evt.target.value]
+        });
+     }
 
     render() {
         let task = {
@@ -28,13 +47,18 @@ class Edit extends Component {
         if (this.props.task) {
             task = this.props.task.filter(task => task.id === parseInt(this.props.taskId, 10))[0];
         }
-        if (this.props.admin) {
+        if (!this.props.admin) {
             return (
                 <div className='col-12 col-md m-1'>
                     <LocalCard item={task} />
                 </div>
             );
         } else {
+            const editTask = {
+                status: task.status,
+                text: task.text
+            }
+            this.props.setDefaultFormValues(editTask);
             return (
                 <div className="container">
                     <div className="row">
@@ -67,9 +91,10 @@ class Edit extends Component {
                                         <Row className="form-group ml-1">
                                             Your Task
                                         <Col md={10}> Old value: {task.text}
-                                                <Control.textarea model=".text" name="text"
+                                                <Control.textarea onChange={this.textChange} model=".text" name="text"
                                                     rows="12"
-                                                    className="form-control" />
+                                                    className="form-control"
+                                                    />
                                             </Col>
                                         </Row>
                                         <Row className="form-group ml-1">

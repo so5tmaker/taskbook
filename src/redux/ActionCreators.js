@@ -61,6 +61,15 @@ export const addTasks = (tasks) => ({
     payload: tasks
 });
 
+export const setDefaultFormValues = (values) => (dispatch) => {
+    dispatch(addDefaultFormValues(values));
+}
+
+export const addDefaultFormValues = (values) => ({
+    type: ActionTypes.ADD_DEFAULTFORMVALUES,
+    payload: values
+});
+
 export const postTask = (task) => (dispatch) => {
 
     let formData = new FormData();

@@ -48,10 +48,10 @@ export class Paginate extends Component {
                     <div className="container">
                         <div className="row justify-content-center">
                             <div className="col-auto">
-                                <RenderPaginations 
-                                tasks={this.props.tasks} 
-                                isLoading={this.props.tasks.isLoading} 
-                                pageQuantity={this.props.pageQuantity}
+                                <RenderPaginations
+                                    tasks={this.props.tasks}
+                                    isLoading={this.props.tasks.isLoading}
+                                    pageQuantity={this.props.pageQuantity}
                                 />
                             </div>
                         </div>

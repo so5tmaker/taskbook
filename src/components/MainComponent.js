@@ -7,7 +7,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask, setPageID } from '../redux/ActionCreators';
+import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask, setPageID, setDefaultFormValues } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 
@@ -18,7 +18,8 @@ const mapDispatchToProps = dispatch => ({
     setAdmin: (admin) => dispatch(setAdmin(admin)),
     editTask: (task, taskId) => dispatch(editTask(task, taskId)),
     fetchTaskById: (taskId) => dispatch(fetchTaskById(taskId)),
-    setPageID: (pageId) => dispatch(setPageID(pageId))
+    setPageID: (pageId) => dispatch(setPageID(pageId)),
+    setDefaultFormValues: (values) => dispatch(setDefaultFormValues(values))
 });
 
 const mapStateToProps = state => {
@@ -27,7 +28,8 @@ const mapStateToProps = state => {
         image: null,
         admin: state.admin,
         pageId: state.pageId,
-        fieldValues: state.fieldValues
+        fieldValues: state.fieldValues,
+        formValues: state.formValues
     }
 };
 
@@ -90,6 +92,7 @@ class Main extends Component {
                                 taskId={match.params.taskId}
                                 editTask={this.props.editTask}
                                 admin={this.props.admin.admin}
+                                setDefaultFormValues={setDefaultFormValues}
                             />
                         </div>
                     </div>
