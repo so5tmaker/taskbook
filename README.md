@@ -1,4 +1,4 @@
-# The Task Manager App
+# The Task Manager App on React
 
 The App allows everyone to see, sort, and create tasks without registration. 
 
