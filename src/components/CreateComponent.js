@@ -12,13 +12,31 @@ const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
+export function RenderMessage({ message, errMess }) {
+    if (message) {
+        let color = 'green';
+        if (errMess) {
+            color = 'red';
+        }
+        return (
+            <div color={color}>{message}</div>
+        )
+    } else {
+        return (
+            <div></div>
+        )
+    }
+
+}
+
 class Create extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             dataUrl: '',
-            imagePreviewUrl: ''
+            imagePreviewUrl: '',
+            message: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -26,6 +44,13 @@ class Create extends Component {
 
     handleSubmit(values) {
         this.props.postTask(values);
+        let message = '';
+        if (this.props.errMess) {
+            message = this.props.errMess;
+        } else {
+            message = 'You task was posted! Thank you!';
+        }
+        this.setState({ message: message });
     }
 
     handleChange = (e) => {
@@ -65,6 +90,7 @@ class Create extends Component {
                     <div className='col-12'>
                         <h3>Create Task</h3>
                         <hr />
+                        <RenderMessage message={this.state.message} errMess={this.props.errMess} />
                     </div>
                 </div>
                 <div className='row row-container'>
