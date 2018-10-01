@@ -7,9 +7,8 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask, setPageID, setDefaultFormValues } from '../redux/ActionCreators';
+import { fetchTasks, postTask, setImage, setAdmin, fetchTaskById, editTask, setPageID, setDefaultFormValues, setDefaultValues } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import PropTypes from 'prop-types';
 
 const mapDispatchToProps = dispatch => ({
     fetchTasks: (pageId, sortField, sortDirection) => dispatch(fetchTasks(pageId, sortField, sortDirection)),
@@ -19,12 +18,14 @@ const mapDispatchToProps = dispatch => ({
     editTask: (task, taskId) => dispatch(editTask(task, taskId)),
     fetchTaskById: (taskId) => dispatch(fetchTaskById(taskId)),
     setPageID: (pageId) => dispatch(setPageID(pageId)),
-    setDefaultFormValues: (values) => dispatch(setDefaultFormValues(values))
+    setDefaultFormValues: (values) => dispatch(setDefaultFormValues(values)),
+    setDefaultValues: (values) => dispatch(setDefaultValues(values))
 });
 
 const mapStateToProps = state => {
     return {
         tasks: state.tasks,
+        task: state.task,
         image: null,
         admin: state.admin,
         pageId: state.pageId,
@@ -39,16 +40,19 @@ class Main extends Component {
         this.props.fetchTasks("1");
     }
 
-    // Access store by defining context types
-    static contextTypes = {
-        store: PropTypes.object
-    }
-
-    get formValues() {
-        // Get the redux store from context
-        const { store } = this.context;
-        const state = store.getState();
-        return state;
+    componentDidUpdate() {
+        let pathname = this.props.location.pathname;
+        let pos = pathname.search("/edit/") + 6;
+        let taskId = pathname.substring(pos, pathname.length);
+        if (taskId) {
+            let tasks = this.props.tasks.tasks.tasks;
+            if (tasks) {
+                let task = tasks.filter(task => task.id === parseInt(taskId, 10))[0];
+                if (task) {
+                    this.props.setDefaultValues(task);
+                }
+            }
+        }
     }
 
     render() {
@@ -60,9 +64,9 @@ class Main extends Component {
                     taskErrMess={this.props.tasks.tasks.errMess}
                     fetchTasks={this.props.fetchTasks}
                     pageIdParams={"1"}
-                    pageId={this.formValues.pageId.pageId}
+                    pageId={this.props.pageId.pageId}
                     pageQuantity={parseInt(this.props.tasks.tasks.total_task_count, 10)}
-                    fieldValues={this.props.fieldValues.fieldValues} 
+                    fieldValues={this.props.fieldValues.fieldValues}
                 />
             );
         }
@@ -75,9 +79,9 @@ class Main extends Component {
                     taskErrMess={this.props.tasks.tasks.errMess}
                     fetchTasks={this.props.fetchTasks}
                     pageIdParams={match.params.pageId}
-                    pageId={this.formValues.pageId.pageId}
+                    pageId={this.props.pageId.pageId}
                     pageQuantity={parseInt(this.props.tasks.tasks.total_task_count, 10)}
-                    fieldValues={this.props.fieldValues.fieldValues} 
+                    fieldValues={this.props.fieldValues.fieldValues}
                 />
             )
         }
@@ -92,11 +96,11 @@ class Main extends Component {
                                 taskId={match.params.taskId}
                                 editTask={this.props.editTask}
                                 admin={this.props.admin.admin}
-                                setDefaultFormValues={setDefaultFormValues}
+                                setDefaultFormValues={this.props.setDefaultFormValues}
+                                formValues={this.props.formValues.formValues}
                             />
                         </div>
                     </div>
-
                 </div>
             )
         }
@@ -110,7 +114,10 @@ class Main extends Component {
                             <Route path="/home" component={HomePage} />
                             <Route path="/page/:pageId" component={TaskWithPage} />
                             <Route exact path="/create"
-                                component={() => <Create postTask={this.props.postTask} setImage={this.props.setImage}
+                                component={() => <Create
+                                    postTask={this.props.postTask}
+                                    setImage={this.props.setImage}
+                                    errMess={this.props.task.errMess}
                                 />}
                             />
                             <Route path="/edit/:taskId" component={TaskWithId}

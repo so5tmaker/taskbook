@@ -27,7 +27,7 @@ export const ConfigureStore = () => {
             formValues: FormValues,
 
             ...createForms({
-                task: initialTask,
+                createTask: initialTask,
                 editTask: initialEditTask
             })
         }),

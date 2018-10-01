@@ -27,7 +27,7 @@ class Preview extends Component {
 
     render() {
 
-        let item = this.formValues.task;
+        let item = this.formValues.createTask;
         let image = this.formValues.image;
     
         return (

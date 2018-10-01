@@ -2,6 +2,7 @@ import * as ActionTypes from './ActionTypes';
 import { rmtUrl } from '../shared/baseUrl';
 import axios from 'axios';
 import md5 from 'md5';
+import { actions } from 'react-redux-form';
 
 const developer = "Viktor";
 
@@ -37,6 +38,10 @@ export const addFieldsValues = (values) => ({
     payload: values
 });
 
+export const TaskLoading = () => ({
+    type: ActionTypes.TASK_LOADING
+});
+
 export const TaskFailed = (errMess) => ({
     type: ActionTypes.TASK_FAILED,
     payload: errMess
@@ -70,7 +75,13 @@ export const addDefaultFormValues = (values) => ({
     payload: values
 });
 
+export const setDefaultValues = (values) => (dispatch) => {
+    dispatch(actions.merge('editTask', values));
+}
+
 export const postTask = (task) => (dispatch) => {
+
+    dispatch(TaskLoading(true));
 
     let formData = new FormData();
     var fileField = document.querySelector("input[type='file']");
@@ -102,12 +113,14 @@ export const postTask = (task) => (dispatch) => {
             error => {
                 throw error;
             })
-        .then(response => { dispatch(addTask(response)); window.location.replace("/home");})
-        .catch(error => { console.log('post task', error.message); alert('Your task could not be posted\nError: ' + error.message); });
+        .then(response => { dispatch(addTask(response)); window.location.replace("/home"); })
+        .catch(error => { dispatch(TaskFailed(error.message)); });
 
 };
 
 export const editTask = (task, taskId) => (dispatch) => {
+
+    dispatch(TaskLoading(true));
 
     let encode = str => {
         return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
@@ -148,14 +161,14 @@ export const editTask = (task, taskId) => (dispatch) => {
             error => {
                 throw error;
             })
-        .then(response => {window.location.replace("/home"); console.log('edit task - ok', JSON.stringify(response.data));})
-        .catch(error => { console.log('edit task - error', error); alert('Your task could not be edited\nError: ' + error.message); });
+        .then(response => { window.location.replace("/home"); console.log('edit task - ok', JSON.stringify(response.data)); })
+        .catch(error => { dispatch(TaskFailed(error.message)); console.log('edit task - error', error); alert('Your task could not be edited\nError: ' + error.message); });
 
 };
 
 export const fetchTasks = (pageId, sortField = 'id', sortDirection = 'asc') => (dispatch) => {
 
-    dispatch(TasksLoading(false));
+    dispatch(TasksLoading(true));
 
     return fetch(`${rmtUrl}?developer=${developer}&page=${pageId}&sort_field=${sortField}&sort_direction=${sortDirection}`)
         .then(response => {
@@ -191,12 +204,17 @@ export const fetchTaskById = (taskId) => (dispatch) => {
                 error.response = response;
                 throw error;
             }
-        }, 
+        },
             error => {
                 var errmess = new Error(error.message);
                 throw errmess;
-            }) 
+            })
         .then(response => response.json())
-        .then(tasks => dispatch(addTask(tasks.message.tasks.filter(task => task.id === parseInt(taskId, 10))[0])))
+        .then(tasks => {
+            let task = tasks.message.tasks.filter(task => task.id === parseInt(taskId, 10))[0]
+            if (task) {
+                dispatch(addTask(task));
+            }
+        })
         .catch(error => dispatch(TaskFailed(error.message)));
 }

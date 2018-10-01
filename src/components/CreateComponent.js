@@ -18,14 +18,14 @@ class Create extends Component {
         super(props);
         this.state = {
             dataUrl: '',
-            imagePreviewUrl: '',
+            imagePreviewUrl: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleSubmit(values) {
         this.props.postTask(values);
-        
     }
 
     handleChange = (e) => {
@@ -38,7 +38,7 @@ class Create extends Component {
         let reader = new FileReader();
         reader.readAsDataURL(files[0]);
 
-        reader.onloadend = () => {
+        reader.onloaded = () => {
             this.setState({
                 imagePreviewUrl: [reader.result]
             });
@@ -69,7 +69,7 @@ class Create extends Component {
                 </div>
                 <div className='row row-container'>
                     <div className='col-12 col-md-9'>
-                        {<Form id='create-task' model="task" encType="multipart/form-data" onSubmit={(values) => this.handleSubmit(values)}>
+                        {<Form id='createTask' model="createTask" encType="multipart/form-data" onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="username" md={2}>Your Name</Label>
                                 <Col md={10}>
@@ -152,5 +152,6 @@ class Create extends Component {
         );
     }
 }
+
 
 export default Create;

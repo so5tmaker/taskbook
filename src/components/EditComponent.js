@@ -13,35 +13,20 @@ class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            "text":''
+            "text": ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.textChange = this.textChange.bind(this);
-    }
-
-    componentDidMount(prevProps, prevState, snapshot){
-        if (this.props.task) {
-            let task = this.props.task.filter(task => task.id === parseInt(this.props.taskId, 10))[0];
-            this.setState({
-                "text": task.text
-             });
-        }
     }
 
     handleSubmit(values) {
         this.props.editTask(values, this.props.taskId);
     }
 
-    textChange(evt) {
-        this.setState({
-           [evt.target.name]: [evt.target.value]
-        });
-     }
-
     render() {
         let task = {
             username: '',
             email: '',
+            status: false,
             text: ''
         }
         if (this.props.task) {
@@ -54,11 +39,6 @@ class Edit extends Component {
                 </div>
             );
         } else {
-            const editTask = {
-                status: task.status,
-                text: task.text
-            }
-            this.props.setDefaultFormValues(editTask);
             return (
                 <div className="container">
                     <div className="row">
@@ -85,16 +65,15 @@ class Edit extends Component {
                                                 <Control.checkbox model=".status" name="status"
                                                     className="form-check-input"
                                                 />
-                                                Old value: {task.status === 0 ? 'Pending...' : 'The Task Was Done'}
                                             </Col>
                                         </Row>
                                         <Row className="form-group ml-1">
                                             Your Task
-                                        <Col md={10}> Old value: {task.text}
-                                                <Control.textarea onChange={this.textChange} model=".text" name="text"
+                                        <Col md={10}>
+                                                <Control.textarea model=".text" name="text"
                                                     rows="12"
                                                     className="form-control"
-                                                    />
+                                                />
                                             </Col>
                                         </Row>
                                         <Row className="form-group ml-1">
