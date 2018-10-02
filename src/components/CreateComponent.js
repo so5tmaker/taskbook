@@ -26,7 +26,10 @@ export function RenderMessage({ message, errMess }) {
             <div></div>
         )
     }
-
+    // Component.render(
+    //     element,
+    //     document.getElementById('root')
+    //   );
 }
 
 class Create extends Component {
