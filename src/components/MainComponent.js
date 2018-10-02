@@ -118,6 +118,7 @@ class Main extends Component {
                                     postTask={this.props.postTask}
                                     setImage={this.props.setImage}
                                     errMess={this.props.task.errMess}
+                                    task={this.props.task.task}
                                 />}
                             />
                             <Route path="/edit/:taskId" component={TaskWithId}

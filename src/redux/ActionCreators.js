@@ -113,7 +113,7 @@ export const postTask = (task) => (dispatch) => {
             error => {
                 throw error;
             })
-        .then(response => { dispatch(addTask(response)); window.location.replace("/home"); })
+        .then(response => { dispatch(addTask(response)); /*window.location.replace("/home");*/ })
         .catch(error => { dispatch(TaskFailed(error.message)); });
 
 };

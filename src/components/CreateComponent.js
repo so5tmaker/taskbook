@@ -14,22 +14,22 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val
 
 export function RenderMessage({ message, errMess }) {
     if (message) {
-        let color = 'green';
+        let color = 'text-success';
         if (errMess) {
-            color = 'red';
+            color = 'text-danger';
         }
         return (
-            <div color={color}>{message}</div>
+            <div className="container">
+                <div className="row justify-content-center">
+                    <div className={color}>{message}</div>
+                </div>
+            </div>
         )
     } else {
         return (
             <div></div>
         )
     }
-    // Component.render(
-    //     element,
-    //     document.getElementById('root')
-    //   );
 }
 
 class Create extends Component {
@@ -51,12 +51,13 @@ class Create extends Component {
         if (this.props.errMess) {
             message = this.props.errMess;
         } else {
-            message = 'You task was posted! Thank you!';
+            message = 'Your task was posted! Thank you!';
         }
         this.setState({ message: message });
     }
 
     handleChange = (e) => {
+        this.setState({ message: '' });
         let files = e.target.files;
         let self = this;
         Resize(files[0], 320, 240, (resizedDataUrl) => {
@@ -74,6 +75,8 @@ class Create extends Component {
             this.props.setImage(imagePreviewUrl);
         }
     }
+
+
 
     render() {
         let image;
@@ -93,7 +96,6 @@ class Create extends Component {
                     <div className='col-12'>
                         <h3>Create Task</h3>
                         <hr />
-                        <RenderMessage message={this.state.message} errMess={this.props.errMess} />
                     </div>
                 </div>
                 <div className='row row-container'>
@@ -152,6 +154,7 @@ class Create extends Component {
                                         className="form-control" />
                                 </Col>
                             </Row>
+                            <RenderMessage message={this.state.message} errMess={this.props.errMess} />
                             <Row className="form-group">
                                 <Col md={10}>
                                     <Control.file onChange={e => this.handleChange(e)} model=".fileUpload" name='fileUpload' />
